@@ -4,50 +4,59 @@
 
 @layer base {
   :root {
-    --glass-bg: rgba(14, 19, 31, 0.7);
-    --glass-border: rgba(255, 255, 255, 0.07);
-    --glass-glow: rgba(59, 130, 246, 0.15);
+    --glass-bg: rgba(18, 14, 27, 0.75);
+    --glass-border: rgba(251, 191, 36, 0.12);
+    --glass-glow: rgba(245, 158, 11, 0.18);
+    --amber-flame: #f59e0b;
   }
 
   body {
-    background-color: #07090e;
+    background-color: #0b0811;
     color: #f1f5f9;
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     overflow-x: hidden;
     background-image: 
-      radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.07) 0px, transparent 50%),
-      radial-gradient(at 100% 0%, rgba(147, 51, 234, 0.06) 0px, transparent 50%),
-      radial-gradient(at 50% 100%, rgba(6, 182, 212, 0.04) 0px, transparent 50%);
+      radial-gradient(at 15% 10%, rgba(225, 29, 72, 0.08) 0px, transparent 45%),
+      radial-gradient(at 85% 15%, rgba(245, 158, 11, 0.09) 0px, transparent 45%),
+      radial-gradient(at 50% 90%, rgba(136, 19, 55, 0.06) 0px, transparent 50%);
     background-attachment: fixed;
   }
 }
 
-/* Glassmorphism & High-End Card Systems */
+/* Atmospheric Twilight Retreat & Glassmorphism System */
 .glass-panel {
-  background: rgba(14, 19, 31, 0.75);
+  background: rgba(18, 14, 27, 0.8);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.6);
 }
 
 .glass-card {
-  background: rgba(19, 26, 42, 0.45);
+  background: rgba(26, 19, 36, 0.45);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(251, 191, 36, 0.08);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glass-card:hover {
-  background: rgba(23, 32, 54, 0.65);
-  border-color: rgba(96, 165, 250, 0.35);
-  box-shadow: 0 12px 30px -8px rgba(59, 130, 246, 0.18);
+  background: rgba(33, 23, 46, 0.65);
+  border-color: rgba(245, 158, 11, 0.35);
+  box-shadow: 0 12px 30px -8px rgba(245, 158, 11, 0.2);
   transform: translateY(-2px);
 }
 
+.glow-cabin-window {
+  box-shadow: 0 0 25px rgba(245, 158, 11, 0.25), inset 0 0 15px rgba(251, 191, 36, 0.2);
+}
+
+.amber-ember-glow {
+  filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.45));
+}
+
 .glass-input {
-  background: rgba(11, 15, 25, 0.7);
+  background: rgba(15, 11, 22, 0.7);
   border: 1px solid rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(10px);
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -55,9 +64,9 @@
 
 .glass-input:focus {
   outline: none;
-  background: rgba(13, 18, 30, 0.85);
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+  background: rgba(18, 13, 27, 0.85);
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.22);
 }
 
 /* Scrollbar polish */

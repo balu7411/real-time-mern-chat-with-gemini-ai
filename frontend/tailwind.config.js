@@ -7,6 +7,8 @@ export default {
       fontFamily: {
         sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
         display: ['Outfit', '"Plus Jakarta Sans"', 'sans-serif'],
+        serif: ['"Playfair Display"', 'Georgia', 'serif'],
+        editorial: ['"Cormorant Garamond"', 'Georgia', 'serif'],
         mono: ['"JetBrains Mono"', 'monospace'],
       },
       colors: {
@@ -16,6 +18,14 @@ export default {
           800: "#101422",
           700: "#181f33",
           600: "#222a42",
+        },
+        twilight: {
+          deep: "#0d0914",
+          plum: "#191124",
+          wine: "#2b142d",
+          crimson: "#881337",
+          amber: "#f59e0b",
+          gold: "#fbbf24",
         },
         panel: "#0e131f",
         panel2: "#141b2d",

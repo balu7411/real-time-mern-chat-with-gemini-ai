@@ -4,6 +4,7 @@ import api from "../api/axios";
 import { useAuth } from "../context/AuthContext.jsx";
 import UserSearch from "../components/UserSearch.jsx";
 import GroupCreator from "../components/GroupCreator.jsx";
+import RetreatHero from "../components/RetreatHero.jsx";
 import PrivateChat from "./PrivateChat.jsx";
 import GroupChat from "./GroupChat.jsx";
 
@@ -183,40 +184,55 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="h-screen bg-[#07090e] text-gray-100 flex flex-col overflow-hidden font-sans select-none">
-      {/* ULTRA-PREMIUM GLASSMORPHIC TOP NAVIGATION */}
-      <header className="h-16 px-4 md:px-6 bg-[#0c1017]/80 backdrop-blur-xl border-b border-white/[0.08] flex items-center justify-between z-30 shrink-0">
+    <div className="h-screen bg-[#0b0811] text-gray-100 flex flex-col overflow-hidden font-sans select-none">
+      {/* ATMOSPHERIC TWILIGHT RETREAT TOP NAVIGATION */}
+      <header className="h-16 px-4 md:px-8 bg-[#130f1c]/90 backdrop-blur-2xl border-b border-amber-500/15 flex items-center justify-between z-30 shrink-0">
         {/* BRAND IDENTITY */}
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-500 to-purple-500 flex items-center justify-center shadow-lg shadow-indigo-500/25 ring-1 ring-white/20">
-            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
+          <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-600 via-rose-600 to-indigo-700 flex items-center justify-center shadow-lg shadow-amber-600/25 ring-1 ring-amber-400/30">
+            <span className="text-amber-200 font-serif font-bold text-lg">✦</span>
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-bold text-base tracking-tight text-white">OmniIDE</span>
-              <span className="px-2 py-0.5 text-[10px] font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded-full">
-                AI Engine
+              <span className="font-serif font-bold text-lg tracking-tight text-white">OmniIDE</span>
+              <span className="px-2 py-0.5 text-[10px] font-semibold bg-amber-500/10 text-amber-300 border border-amber-500/25 rounded-full font-sans">
+                Sanctuary
               </span>
             </div>
-            <p className="text-[11px] text-gray-400 font-medium">Real-Time Collaborative Mesh</p>
+            <p className="text-[11px] text-gray-400 font-medium">Architectural Cloud Mesh</p>
           </div>
         </div>
 
+        {/* EDITORIAL NAV LINKS (Directly reflecting reference design) */}
+        <nav className="hidden xl:flex items-center gap-8 text-xs font-sans text-gray-300">
+          <button onClick={() => setActiveSection("projects")} className="hover:text-amber-300 transition cursor-pointer">
+            Architecture
+          </button>
+          <button onClick={() => setShowAIBuilder(true)} className="hover:text-amber-300 transition cursor-pointer">
+            AI Mesh
+          </button>
+          <button onClick={() => setActiveSection("groups")} className="hover:text-amber-300 transition cursor-pointer">
+            Workspaces
+          </button>
+          <button onClick={() => setActiveSection("private")} className="hover:text-amber-300 transition cursor-pointer">
+            Direct
+          </button>
+        </nav>
+
         {/* SYSTEM STATUS TELEMETRY PILL */}
-        <div className="hidden lg:flex items-center gap-4 bg-white/[0.03] border border-white/[0.06] rounded-full px-4 py-1.5 text-xs text-gray-400">
+        <div className="hidden lg:flex items-center gap-4 bg-black/40 border border-amber-500/20 rounded-full px-4 py-1.5 text-xs text-gray-400">
           <div className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-sm shadow-emerald-500/50" />
-            <span className="text-gray-300 font-medium">Redis 7 Cluster</span>
+            <span className="text-amber-400 text-xs">🔥</span>
+            <span className="text-amber-200 font-medium">Redis 7 Clustered</span>
           </div>
           <span className="text-gray-600">•</span>
           <div className="flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
             <span className="text-gray-300 font-medium">BullMQ Active</span>
           </div>
           <span className="text-gray-600">•</span>
           <div className="flex items-center gap-1.5">
-            <span className="text-purple-400 font-medium">Gemini 1.5 Pro</span>
+            <span className="text-purple-300 font-medium">Gemini 1.5 Pro</span>
           </div>
         </div>
 
@@ -224,12 +240,9 @@ export default function Dashboard() {
         <div className="flex items-center gap-3">
           <button
             onClick={() => setShowAIBuilder(true)}
-            className="hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-semibold shadow-md shadow-purple-600/20 transition-all transform hover:-translate-y-0.5 cursor-pointer"
+            className="hidden sm:flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-[#0b0811] text-xs font-bold shadow-md shadow-amber-500/20 transition-all transform hover:-translate-y-0.5 cursor-pointer"
           >
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-            </svg>
-            <span>AI Architect</span>
+            <span>✨ AI Architect</span>
           </button>
 
           {/* User Menu Trigger */}
@@ -317,33 +330,33 @@ export default function Dashboard() {
       <div className="flex-1 flex min-h-0 relative">
         {/* SIDEBAR */}
         <aside
-          className={`w-full md:w-[380px] lg:w-[410px] shrink-0 bg-[#090c13]/90 backdrop-blur-xl border-r border-white/[0.06] flex flex-col transition-all duration-300 ${
+          className={`w-full md:w-[380px] lg:w-[410px] shrink-0 bg-[#0e0915]/95 backdrop-blur-2xl border-r border-amber-500/10 flex flex-col transition-all duration-300 ${
             hasOpenChat ? "hidden md:flex" : "flex"
           }`}
         >
           {/* SEARCH BOX */}
           <div className="p-3.5 border-b border-white/[0.06]">
             <div className="relative group">
-              <svg className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2 transition-colors group-focus-within:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2 transition-colors group-focus-within:text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
               <input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search conversations or projects..."
-                className="w-full bg-white/[0.04] hover:bg-white/[0.06] focus:bg-white/[0.07] border border-white/[0.08] focus:border-blue-500/50 rounded-xl py-2.5 pl-10 pr-4 text-xs text-white placeholder-gray-500 outline-none transition-all shadow-inner"
+                className="w-full bg-white/[0.03] hover:bg-white/[0.05] focus:bg-[#140e1f] border border-white/[0.08] focus:border-amber-500/50 rounded-xl py-2.5 pl-10 pr-4 text-xs text-white placeholder-gray-500 outline-none transition-all shadow-inner"
               />
             </div>
           </div>
 
           {/* SEGMENTED CONTROL TABS */}
           <div className="px-3.5 py-2.5 border-b border-white/[0.06]">
-            <div className="grid grid-cols-3 gap-1 bg-black/40 p-1 rounded-xl border border-white/[0.04]">
+            <div className="grid grid-cols-3 gap-1 bg-black/50 p-1 rounded-xl border border-white/[0.05]">
               <button
                 onClick={() => setActiveSection("private")}
-                className={`py-1.5 px-2 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all ${
+                className={`py-1.5 px-2 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
                   activeSection === "private"
-                    ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md shadow-blue-600/25"
+                    ? "bg-gradient-to-r from-amber-600 to-amber-700 text-white shadow-md shadow-amber-600/30"
                     : "text-gray-400 hover:text-gray-200 hover:bg-white/[0.03]"
                 }`}
               >
@@ -353,9 +366,9 @@ export default function Dashboard() {
 
               <button
                 onClick={() => setActiveSection("groups")}
-                className={`py-1.5 px-2 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all ${
+                className={`py-1.5 px-2 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
                   activeSection === "groups"
-                    ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md shadow-blue-600/25"
+                    ? "bg-gradient-to-r from-amber-600 to-amber-700 text-white shadow-md shadow-amber-600/30"
                     : "text-gray-400 hover:text-gray-200 hover:bg-white/[0.03]"
                 }`}
               >
@@ -365,9 +378,9 @@ export default function Dashboard() {
 
               <button
                 onClick={() => setActiveSection("projects")}
-                className={`py-1.5 px-2 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all ${
+                className={`py-1.5 px-2 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
                   activeSection === "projects"
-                    ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md shadow-blue-600/25"
+                    ? "bg-gradient-to-r from-amber-600 to-amber-700 text-white shadow-md shadow-amber-600/30"
                     : "text-gray-400 hover:text-gray-200 hover:bg-white/[0.03]"
                 }`}
               >
@@ -541,10 +554,10 @@ export default function Dashboard() {
           </div>
         </aside>
 
-        {/* RIGHT PANEL: CHAT ROUTE OR STUNNING COLLABORATIVE COMMAND CENTER */}
+        {/* RIGHT PANEL: CHAT ROUTE OR STUNNING RETREAT SANCTUARY COMMAND CENTER */}
         <main
-          className={`flex-1 min-w-0 bg-[#07090e] ${
-            hasOpenChat ? "block" : "hidden md:flex flex-col items-center justify-center p-8 overflow-y-auto"
+          className={`flex-1 min-w-0 bg-[#0b0811] ${
+            hasOpenChat ? "block" : "hidden md:flex flex-col items-center p-6 lg:p-8 overflow-y-auto"
           }`}
         >
           {isPrivateChatRoute ? (
@@ -556,45 +569,37 @@ export default function Dashboard() {
               <GroupChat />
             </div>
           ) : (
-            /* ULTRA-MODERN COMMAND CENTER DASHBOARD HUB */
-            <div className="max-w-4xl w-full my-auto space-y-8 animate-fade-in py-6">
-              {/* HERO BANNER */}
-              <div className="text-center space-y-3">
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-indigo-500/10 border border-purple-500/20 text-purple-300 text-xs font-semibold shadow-sm">
-                  <span className="flex h-2 w-2 relative">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
-                  </span>
-                  <span>Autonomous Cloud IDE & Multi-Model AI Engine</span>
-                </div>
-                <h2 className="text-3xl lg:text-5xl font-extrabold tracking-tight text-white font-display">
-                  Welcome back, <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-300 to-purple-400">{user?.name || "Developer"}</span>
-                </h2>
-                <p className="text-sm text-gray-400 max-w-xl mx-auto leading-relaxed">
-                  Select a discussion on the left, or launch an AI-powered code workspace with instant real-time synchronization.
-                </p>
-              </div>
+            /* ARCHITECTURAL SANCTUARY COMMAND CENTER */
+            <div className="max-w-5xl w-full my-auto space-y-8 animate-fade-in py-2">
+              {/* RETREAT HERO SHOWCASE (Matching reference artwork) */}
+              <RetreatHero
+                user={user}
+                onLaunchAI={() => setShowAIBuilder(true)}
+                onLaunchWorkspace={() => setShowModal(true)}
+                onNewChat={() => setShowNewChat(true)}
+                onNewGroup={() => setShowNewGroup(true)}
+              />
 
-              {/* 4-ACTION QUICK LAUNCH GRID */}
+              {/* 4-ACTION CABIN WINDOW LAUNCH GRID */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {/* 1. AI Project Architect */}
                 <div
                   onClick={() => setShowAIBuilder(true)}
-                  className="p-5 rounded-2xl bg-gradient-to-br from-[#101424] to-[#0a0d14] border border-purple-500/20 hover:border-purple-500/50 hover:shadow-2xl hover:shadow-purple-500/15 transition-all duration-300 cursor-pointer group"
+                  className="p-5 rounded-2xl bg-[#140e1f]/90 border border-amber-500/25 hover:border-amber-400/60 hover:shadow-2xl hover:shadow-amber-500/15 transition-all duration-300 cursor-pointer group"
                 >
-                  <div className="w-11 h-11 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 mb-3 group-hover:scale-110 group-hover:bg-purple-500/20 transition-all">
+                  <div className="w-11 h-11 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-3 group-hover:scale-110 group-hover:bg-amber-500/20 transition-all">
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>
                   </div>
-                  <h3 className="text-sm font-bold text-white group-hover:text-purple-300 transition-colors flex items-center justify-between">
-                    <span>AI Project Architect</span>
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 font-mono">Gemini 1.5</span>
+                  <h3 className="text-sm font-bold text-white group-hover:text-amber-300 transition-colors flex items-center justify-between">
+                    <span className="font-serif text-base">AI Project Architect</span>
+                    <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-mono">Gemini 1.5 Pro</span>
                   </h3>
                   <p className="text-xs text-gray-400 mt-1.5 leading-relaxed">
                     Prompt Gemini to autonomously scaffold a fullstack MERN project with live virtual files.
                   </p>
-                  <div className="mt-3.5 flex items-center text-xs font-semibold text-purple-400 group-hover:translate-x-1 transition-transform">
+                  <div className="mt-3.5 flex items-center text-xs font-semibold text-amber-400 group-hover:translate-x-1 transition-transform">
                     <span>Scaffold Project &rarr;</span>
                   </div>
                 </div>
@@ -602,21 +607,21 @@ export default function Dashboard() {
                 {/* 2. Monaco Workspace */}
                 <div
                   onClick={() => setShowModal(true)}
-                  className="p-5 rounded-2xl bg-gradient-to-br from-[#101424] to-[#0a0d14] border border-blue-500/20 hover:border-blue-500/50 hover:shadow-2xl hover:shadow-blue-500/15 transition-all duration-300 cursor-pointer group"
+                  className="p-5 rounded-2xl bg-[#140e1f]/90 border border-indigo-500/25 hover:border-indigo-400/60 hover:shadow-2xl hover:shadow-indigo-500/15 transition-all duration-300 cursor-pointer group"
                 >
-                  <div className="w-11 h-11 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 mb-3 group-hover:scale-110 group-hover:bg-blue-500/20 transition-all">
+                  <div className="w-11 h-11 rounded-xl bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center text-indigo-400 mb-3 group-hover:scale-110 group-hover:bg-indigo-500/20 transition-all">
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                     </svg>
                   </div>
-                  <h3 className="text-sm font-bold text-white group-hover:text-blue-300 transition-colors flex items-center justify-between">
-                    <span>New Code Workspace</span>
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 font-mono">Monaco IDE</span>
+                  <h3 className="text-sm font-bold text-white group-hover:text-indigo-300 transition-colors flex items-center justify-between">
+                    <span className="font-serif text-base">New Code Workspace</span>
+                    <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 font-mono">Monaco Sandbox</span>
                   </h3>
                   <p className="text-xs text-gray-400 mt-1.5 leading-relaxed">
                     Launch an isolated Monaco editor & WebContainer sandbox with real-time peer sync.
                   </p>
-                  <div className="mt-3.5 flex items-center text-xs font-semibold text-blue-400 group-hover:translate-x-1 transition-transform">
+                  <div className="mt-3.5 flex items-center text-xs font-semibold text-indigo-400 group-hover:translate-x-1 transition-transform">
                     <span>Create Workspace &rarr;</span>
                   </div>
                 </div>
@@ -624,21 +629,21 @@ export default function Dashboard() {
                 {/* 3. Direct Discussion */}
                 <div
                   onClick={() => setShowNewChat(true)}
-                  className="p-5 rounded-2xl bg-gradient-to-br from-[#101424] to-[#0a0d14] border border-emerald-500/20 hover:border-emerald-500/50 hover:shadow-2xl hover:shadow-emerald-500/15 transition-all duration-300 cursor-pointer group"
+                  className="p-5 rounded-2xl bg-[#140e1f]/90 border border-rose-500/25 hover:border-rose-400/60 hover:shadow-2xl hover:shadow-rose-500/15 transition-all duration-300 cursor-pointer group"
                 >
-                  <div className="w-11 h-11 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 mb-3 group-hover:scale-110 group-hover:bg-emerald-500/20 transition-all">
+                  <div className="w-11 h-11 rounded-xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-400 mb-3 group-hover:scale-110 group-hover:bg-rose-500/20 transition-all">
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                     </svg>
                   </div>
-                  <h3 className="text-sm font-bold text-white group-hover:text-emerald-300 transition-colors flex items-center justify-between">
-                    <span>Direct Discussion</span>
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-mono">1-on-1 P2P</span>
+                  <h3 className="text-sm font-bold text-white group-hover:text-rose-300 transition-colors flex items-center justify-between">
+                    <span className="font-serif text-base">Direct Discussion</span>
+                    <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-rose-500/20 text-rose-300 font-mono">1-on-1 Encrypted</span>
                   </h3>
                   <p className="text-xs text-gray-400 mt-1.5 leading-relaxed">
                     Start a real-time private discussion with encrypted peer routing over Redis Pub/Sub.
                   </p>
-                  <div className="mt-3.5 flex items-center text-xs font-semibold text-emerald-400 group-hover:translate-x-1 transition-transform">
+                  <div className="mt-3.5 flex items-center text-xs font-semibold text-rose-400 group-hover:translate-x-1 transition-transform">
                     <span>Find Users &rarr;</span>
                   </div>
                 </div>
@@ -646,21 +651,21 @@ export default function Dashboard() {
                 {/* 4. Team Room */}
                 <div
                   onClick={() => setShowNewGroup(true)}
-                  className="p-5 rounded-2xl bg-gradient-to-br from-[#101424] to-[#0a0d14] border border-cyan-500/20 hover:border-cyan-500/50 hover:shadow-2xl hover:shadow-cyan-500/15 transition-all duration-300 cursor-pointer group"
+                  className="p-5 rounded-2xl bg-[#140e1f]/90 border border-amber-500/25 hover:border-amber-400/60 hover:shadow-2xl hover:shadow-amber-500/15 transition-all duration-300 cursor-pointer group"
                 >
-                  <div className="w-11 h-11 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 mb-3 group-hover:scale-110 group-hover:bg-cyan-500/20 transition-all">
+                  <div className="w-11 h-11 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-3 group-hover:scale-110 group-hover:bg-amber-500/20 transition-all">
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                     </svg>
                   </div>
-                  <h3 className="text-sm font-bold text-white group-hover:text-cyan-300 transition-colors flex items-center justify-between">
-                    <span>Team Workspace</span>
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 font-mono">Multi-Cursor</span>
+                  <h3 className="text-sm font-bold text-white group-hover:text-amber-300 transition-colors flex items-center justify-between">
+                    <span className="font-serif text-base">Team Workspace</span>
+                    <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-mono">Multi-Cursor</span>
                   </h3>
                   <p className="text-xs text-gray-400 mt-1.5 leading-relaxed">
                     Assemble a multi-user collaborative group room with live presence and code sharing.
                   </p>
-                  <div className="mt-3.5 flex items-center text-xs font-semibold text-cyan-400 group-hover:translate-x-1 transition-transform">
+                  <div className="mt-3.5 flex items-center text-xs font-semibold text-amber-400 group-hover:translate-x-1 transition-transform">
                     <span>Create Room &rarr;</span>
                   </div>
                 </div>
@@ -668,7 +673,7 @@ export default function Dashboard() {
 
               {/* QUICK STARTER TEMPLATES */}
               <div className="flex items-center gap-2 flex-wrap justify-center text-xs text-gray-400">
-                <span className="text-gray-500 font-semibold uppercase tracking-wider text-[10px]">Instant Starters:</span>
+                <span className="text-amber-400/80 font-semibold uppercase tracking-wider text-[10px]">Campfire Starters:</span>
                 <button
                   onClick={() => {
                     setAIProjectName("Express-Mongo-API");
@@ -676,9 +681,9 @@ export default function Dashboard() {
                     setAITechStack("Node.js + Express + MongoDB");
                     setShowAIBuilder(true);
                   }}
-                  className="px-3 py-1 rounded-lg bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.06] hover:border-white/[0.15] text-gray-300 transition flex items-center gap-1.5"
+                  className="px-3.5 py-1.5 rounded-full bg-white/[0.03] hover:bg-amber-500/10 border border-white/[0.08] hover:border-amber-500/30 text-gray-300 hover:text-amber-200 transition flex items-center gap-1.5 cursor-pointer"
                 >
-                  <span className="text-emerald-400">⚡</span>
+                  <span className="text-amber-400">⚡</span>
                   <span>Express + Mongo API</span>
                 </button>
                 <button
@@ -688,9 +693,9 @@ export default function Dashboard() {
                     setAITechStack("React + Vite + Tailwind + WebContainer");
                     setShowAIBuilder(true);
                   }}
-                  className="px-3 py-1 rounded-lg bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.06] hover:border-white/[0.15] text-gray-300 transition flex items-center gap-1.5"
+                  className="px-3.5 py-1.5 rounded-full bg-white/[0.03] hover:bg-amber-500/10 border border-white/[0.08] hover:border-amber-500/30 text-gray-300 hover:text-amber-200 transition flex items-center gap-1.5 cursor-pointer"
                 >
-                  <span className="text-blue-400">⚛️</span>
+                  <span className="text-indigo-400">⚛️</span>
                   <span>React 19 + Monaco</span>
                 </button>
                 <button
@@ -700,32 +705,32 @@ export default function Dashboard() {
                     setAITechStack("Node.js + Socket.IO + Redis 7 + BullMQ");
                     setShowAIBuilder(true);
                   }}
-                  className="px-3 py-1 rounded-lg bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.06] hover:border-white/[0.15] text-gray-300 transition flex items-center gap-1.5"
+                  className="px-3.5 py-1.5 rounded-full bg-white/[0.03] hover:bg-amber-500/10 border border-white/[0.08] hover:border-amber-500/30 text-gray-300 hover:text-amber-200 transition flex items-center gap-1.5 cursor-pointer"
                 >
-                  <span className="text-purple-400">🔄</span>
+                  <span className="text-rose-400">🔄</span>
                   <span>Redis PubSub Mesh</span>
                 </button>
               </div>
 
               {/* ARCHITECTURE METRICS STATUS BAR */}
-              <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.05] flex flex-wrap items-center justify-between gap-4 text-xs">
+              <div className="p-4 rounded-2xl bg-black/40 border border-amber-500/15 flex flex-wrap items-center justify-between gap-4 text-xs">
                 <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                  <span className="w-2 h-2 rounded-full bg-emerald-400" />
                   <span className="text-gray-400">Stateless Socket Nodes:</span>
                   <span className="font-semibold text-gray-200">Clustered</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-blue-500" />
+                  <span className="w-2 h-2 rounded-full bg-amber-400" />
                   <span className="text-gray-400">Job Queues:</span>
-                  <span className="font-semibold text-gray-200">BullMQ Distributed</span>
+                  <span className="font-semibold text-amber-200">BullMQ Distributed</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-purple-500" />
+                  <span className="w-2 h-2 rounded-full bg-purple-400" />
                   <span className="text-gray-400">AI Fallback:</span>
                   <span className="font-semibold text-gray-200">Gemini &bull; Claude &bull; GPT</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-indigo-500" />
+                  <span className="w-2 h-2 rounded-full bg-rose-400" />
                   <span className="text-gray-400">Memory Protocol:</span>
                   <span className="font-semibold text-emerald-400">Zero-Leak Disposed</span>
                 </div>

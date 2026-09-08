@@ -21,17 +21,42 @@ async function main() {
 
   console.log("Capturing Dashboard page with auth state...");
   await page.addInitScript(() => {
-    localStorage.setItem("auth_token", "fake-enterprise-token");
-    localStorage.setItem(
-      "auth_user",
-      JSON.stringify({
-        _id: "65f000000000000000000001",
-        name: "Lead Systems Architect",
-        email: "architect@omniide.cloud",
-        authProvider: "google",
-      })
-    );
+    sessionStorage.setItem("token", "fake-enterprise-token");
+    localStorage.setItem("token", "fake-enterprise-token");
   });
+
+  await page.route("**/api/auth/me", async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({
+        user: {
+          _id: "65f000000000000000000001",
+          name: "Lead Systems Architect",
+          email: "architect@omniide.cloud",
+          authProvider: "google",
+          avatar: ""
+        }
+      })
+    });
+  });
+
+  await page.route("**/api/conversations", async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({ conversations: [] })
+    });
+  });
+
+  await page.route("**/api/projects", async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({ projects: [] })
+    });
+  });
+
   await page.goto("http://localhost:5174/", { waitUntil: "networkidle" });
   await page.waitForTimeout(1000);
   await page.screenshot({ path: path.join(ARTIFACT_DIR, "dashboard_redesigned.png"), fullPage: true });

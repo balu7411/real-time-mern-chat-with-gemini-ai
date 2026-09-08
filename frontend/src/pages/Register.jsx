@@ -26,23 +26,30 @@ export default function Register() {
   }
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center p-4 overflow-hidden bg-[#07090e]">
-      {/* Radiant ambient glow orbs */}
-      <div className="absolute top-1/4 -right-20 w-96 h-96 bg-indigo-600/15 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/4 -left-20 w-96 h-96 bg-cyan-600/15 rounded-full blur-3xl pointer-events-none" />
+    <div className="relative min-h-screen flex items-center justify-center p-4 overflow-hidden bg-[#0c0814]">
+      {/* Radiant ambient twilight & campfire glow orbs */}
+      <div className="absolute top-1/4 -right-20 w-96 h-96 bg-rose-900/25 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/4 -left-20 w-96 h-96 bg-amber-600/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-purple-950/30 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="relative w-full max-w-md p-8 sm:p-10 rounded-3xl bg-[#0e131f]/80 backdrop-blur-2xl border border-white/[0.08] shadow-2xl shadow-black/80 space-y-6">
+      <div className="relative w-full max-w-md p-8 sm:p-10 rounded-3xl bg-[#130d1e]/90 backdrop-blur-2xl border border-amber-500/20 shadow-2xl shadow-black/80 space-y-6">
         {/* Brand Header */}
         <div className="text-center space-y-2">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-purple-600 shadow-lg shadow-blue-500/25 mb-1">
-            <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-500 via-rose-600 to-purple-700 shadow-lg shadow-amber-500/25 mb-1 text-amber-100">
+            <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C11.5 2 11 2.19 10.59 2.59L2.59 10.59C1.8 11.37 1.8 12.63 2.59 13.41L10.59 21.41C11.37 22.2 12.63 22.2 13.41 21.41L21.41 13.41C22.2 12.63 22.2 11.37 21.41 10.59L13.41 2.59C13 2.19 12.5 2 12 2Z" fillOpacity="0.25" stroke="currentColor" strokeWidth="1.5" />
+              <circle cx="12" cy="12" r="3" fill="currentColor" />
             </svg>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white font-display">
+          <div className="flex items-center justify-center gap-2">
+            <span className="text-[10px] tracking-widest uppercase font-mono px-2.5 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300">
+              Sanctuary Access
+            </span>
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight text-white">
             Create account
           </h1>
-          <p className="text-xs sm:text-sm text-gray-400">
+          <p className="text-xs sm:text-sm text-amber-200/60 font-sans">
             Get started with your collaborative workspace
           </p>
         </div>
@@ -98,7 +105,7 @@ export default function Register() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Your name"
-              className="w-full bg-[#080b12]/80 border border-white/[0.08] focus:border-blue-500 text-white rounded-xl px-3.5 py-2.5 text-sm outline-none transition-all placeholder:text-gray-600 focus:ring-2 focus:ring-blue-500/20"
+              className="w-full bg-[#0a0711]/90 border border-amber-500/20 focus:border-amber-400 text-white rounded-xl px-3.5 py-2.5 text-sm outline-none transition-all placeholder:text-gray-500 focus:ring-2 focus:ring-amber-500/20"
             />
           </div>
 
@@ -110,7 +117,7 @@ export default function Register() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
-              className="w-full bg-[#080b12]/80 border border-white/[0.08] focus:border-blue-500 text-white rounded-xl px-3.5 py-2.5 text-sm outline-none transition-all placeholder:text-gray-600 focus:ring-2 focus:ring-blue-500/20"
+              className="w-full bg-[#0a0711]/90 border border-amber-500/20 focus:border-amber-400 text-white rounded-xl px-3.5 py-2.5 text-sm outline-none transition-all placeholder:text-gray-500 focus:ring-2 focus:ring-amber-500/20"
             />
           </div>
 
@@ -123,14 +130,14 @@ export default function Register() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="At least 6 characters"
-              className="w-full bg-[#080b12]/80 border border-white/[0.08] focus:border-blue-500 text-white rounded-xl px-3.5 py-2.5 text-sm outline-none transition-all placeholder:text-gray-600 focus:ring-2 focus:ring-blue-500/20"
+              className="w-full bg-[#0a0711]/90 border border-amber-500/20 focus:border-amber-400 text-white rounded-xl px-3.5 py-2.5 text-sm outline-none transition-all placeholder:text-gray-500 focus:ring-2 focus:ring-amber-500/20"
             />
           </div>
 
           <button
             type="submit"
             disabled={busy}
-            className="w-full mt-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-sm font-semibold rounded-xl py-2.5 px-4 shadow-lg shadow-blue-600/25 transition-all transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+            className="w-full mt-2 bg-gradient-to-r from-amber-500 via-rose-600 to-purple-600 hover:from-amber-400 hover:via-rose-500 hover:to-purple-500 text-white text-sm font-semibold rounded-xl py-2.5 px-4 shadow-lg shadow-amber-500/20 transition-all transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >
             {busy ? "Creating..." : "Create account"}
           </button>
@@ -139,7 +146,7 @@ export default function Register() {
         {/* Footer Link */}
         <p className="text-xs text-gray-400 text-center pt-1">
           Already have an account?{" "}
-          <Link to="/login" className="text-blue-400 hover:text-blue-300 font-semibold transition">
+          <Link to="/login" className="text-amber-400 hover:text-amber-300 font-semibold transition">
             Login
           </Link>
         </p>
