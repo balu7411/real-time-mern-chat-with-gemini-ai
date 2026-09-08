@@ -420,18 +420,20 @@ export default function Dashboard() {
                 <div className="py-12 text-center text-xs text-gray-500">Loading workspaces...</div>
               ) : filteredProjects.length === 0 ? (
                 <div className="py-12 px-4 text-center">
-                  <div className="w-12 h-12 mx-auto rounded-2xl bg-white/[0.03] border border-white/[0.08] flex items-center justify-center text-2xl mb-3">
-                    📁
+                  <div className="w-12 h-12 mx-auto rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 mb-3 shadow-inner">
+                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                    </svg>
                   </div>
-                  <h4 className="text-sm font-semibold text-gray-300">No projects yet</h4>
-                  <p className="text-xs text-gray-500 mt-1 max-w-[200px] mx-auto">
-                    Create an interactive workspace or scaffold one with AI.
+                  <h4 className="text-sm font-semibold text-gray-200">No workspaces yet</h4>
+                  <p className="text-xs text-gray-400 mt-1 max-w-[200px] mx-auto leading-relaxed">
+                    Create an isolated Monaco sandbox or scaffold one with AI.
                   </p>
                   <button
                     onClick={() => setShowModal(true)}
-                    className="mt-4 px-4 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium transition"
+                    className="mt-4 px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-semibold shadow-lg shadow-blue-600/20 transition cursor-pointer"
                   >
-                    Create Workspace
+                    + Create Workspace
                   </button>
                 </div>
               ) : (
@@ -442,8 +444,10 @@ export default function Dashboard() {
                     className="w-full text-left p-3 rounded-xl border border-white/[0.04] bg-white/[0.02] hover:bg-white/[0.06] hover:border-white/[0.1] transition-all group"
                   >
                     <div className="flex items-start gap-3">
-                      <div className="w-9 h-9 rounded-lg bg-gradient-to-tr from-blue-600/30 to-indigo-600/30 border border-blue-500/20 flex items-center justify-center text-sm shrink-0">
-                        💻
+                      <div className="w-9 h-9 rounded-lg bg-gradient-to-tr from-blue-600/30 to-indigo-600/30 border border-blue-500/20 flex items-center justify-center text-blue-400 shrink-0">
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                        </svg>
                       </div>
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center justify-between">
@@ -471,22 +475,24 @@ export default function Dashboard() {
               <div className="py-12 text-center text-xs text-gray-500">Loading conversations...</div>
             ) : (activeSection === "private" ? filteredPrivateChats : filteredGroupChats).length === 0 ? (
               <div className="py-12 px-4 text-center">
-                <div className="w-12 h-12 mx-auto rounded-2xl bg-white/[0.03] border border-white/[0.08] flex items-center justify-center text-2xl mb-3">
-                  💬
+                <div className="w-12 h-12 mx-auto rounded-2xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 mb-3 shadow-inner">
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                  </svg>
                 </div>
-                <h4 className="text-sm font-semibold text-gray-300">
-                  {activeSection === "private" ? "No private chats yet" : "No team rooms yet"}
+                <h4 className="text-sm font-semibold text-gray-200">
+                  {activeSection === "private" ? "No discussions yet" : "No team rooms yet"}
                 </h4>
-                <p className="text-xs text-gray-500 mt-1 max-w-[200px] mx-auto">
+                <p className="text-xs text-gray-400 mt-1 max-w-[200px] mx-auto leading-relaxed">
                   {activeSection === "private"
-                    ? "Start a direct conversation with a colleague."
-                    : "Create a group room for your project team."}
+                    ? "Connect with team members via encrypted low-latency channels."
+                    : "Create a group room for live code reviews and team sync."}
                 </p>
                 <button
                   onClick={() => (activeSection === "private" ? setShowNewChat(true) : setShowNewGroup(true))}
-                  className="mt-4 px-4 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium transition"
+                  className="mt-4 px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-semibold shadow-lg shadow-blue-600/20 transition cursor-pointer"
                 >
-                  {activeSection === "private" ? "Start Direct Chat" : "Create Team Room"}
+                  {activeSection === "private" ? "+ Start Direct Chat" : "+ Create Team Room"}
                 </button>
               </div>
             ) : (
@@ -551,18 +557,21 @@ export default function Dashboard() {
             </div>
           ) : (
             /* ULTRA-MODERN COMMAND CENTER DASHBOARD HUB */
-            <div className="max-w-3xl w-full my-auto space-y-8 animate-fade-in">
+            <div className="max-w-4xl w-full my-auto space-y-8 animate-fade-in py-6">
               {/* HERO BANNER */}
               <div className="text-center space-y-3">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-indigo-500/10 border border-purple-500/20 text-purple-300 text-xs font-medium shadow-sm">
-                  <span className="text-purple-400">✨</span>
-                  <span>Collaborative Cloud IDE & Multi-Model AI Engine</span>
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-indigo-500/10 border border-purple-500/20 text-purple-300 text-xs font-semibold shadow-sm">
+                  <span className="flex h-2 w-2 relative">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
+                  </span>
+                  <span>Autonomous Cloud IDE & Multi-Model AI Engine</span>
                 </div>
-                <h2 className="text-3xl lg:text-4xl font-extrabold tracking-tight text-white">
+                <h2 className="text-3xl lg:text-5xl font-extrabold tracking-tight text-white font-display">
                   Welcome back, <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-300 to-purple-400">{user?.name || "Developer"}</span>
                 </h2>
                 <p className="text-sm text-gray-400 max-w-xl mx-auto leading-relaxed">
-                  Select an active conversation on the left, or jump straight into an AI-powered code workspace with live collaborative synchronization.
+                  Select a discussion on the left, or launch an AI-powered code workspace with instant real-time synchronization.
                 </p>
               </div>
 
@@ -571,18 +580,21 @@ export default function Dashboard() {
                 {/* 1. AI Project Architect */}
                 <div
                   onClick={() => setShowAIBuilder(true)}
-                  className="p-5 rounded-2xl bg-gradient-to-br from-[#121624] to-[#0c0f17] border border-purple-500/20 hover:border-purple-500/50 hover:shadow-xl hover:shadow-purple-500/10 transition-all duration-300 cursor-pointer group"
+                  className="p-5 rounded-2xl bg-gradient-to-br from-[#101424] to-[#0a0d14] border border-purple-500/20 hover:border-purple-500/50 hover:shadow-2xl hover:shadow-purple-500/15 transition-all duration-300 cursor-pointer group"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-lg mb-3 group-hover:scale-110 transition-transform">
-                    🤖
+                  <div className="w-11 h-11 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 mb-3 group-hover:scale-110 group-hover:bg-purple-500/20 transition-all">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
                   </div>
-                  <h3 className="text-sm font-bold text-white group-hover:text-purple-300 transition-colors">
-                    AI Project Architect
+                  <h3 className="text-sm font-bold text-white group-hover:text-purple-300 transition-colors flex items-center justify-between">
+                    <span>AI Project Architect</span>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 font-mono">Gemini 1.5</span>
                   </h3>
-                  <p className="text-xs text-gray-400 mt-1 leading-normal">
-                    Prompt Gemini to generate a complete fullstack MERN project with live virtual files.
+                  <p className="text-xs text-gray-400 mt-1.5 leading-relaxed">
+                    Prompt Gemini to autonomously scaffold a fullstack MERN project with live virtual files.
                   </p>
-                  <div className="mt-3 flex items-center text-xs font-semibold text-purple-400 group-hover:translate-x-1 transition-transform">
+                  <div className="mt-3.5 flex items-center text-xs font-semibold text-purple-400 group-hover:translate-x-1 transition-transform">
                     <span>Scaffold Project &rarr;</span>
                   </div>
                 </div>
@@ -590,18 +602,21 @@ export default function Dashboard() {
                 {/* 2. Monaco Workspace */}
                 <div
                   onClick={() => setShowModal(true)}
-                  className="p-5 rounded-2xl bg-gradient-to-br from-[#121624] to-[#0c0f17] border border-blue-500/20 hover:border-blue-500/50 hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 cursor-pointer group"
+                  className="p-5 rounded-2xl bg-gradient-to-br from-[#101424] to-[#0a0d14] border border-blue-500/20 hover:border-blue-500/50 hover:shadow-2xl hover:shadow-blue-500/15 transition-all duration-300 cursor-pointer group"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-lg mb-3 group-hover:scale-110 transition-transform">
-                    💻
+                  <div className="w-11 h-11 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 mb-3 group-hover:scale-110 group-hover:bg-blue-500/20 transition-all">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                    </svg>
                   </div>
-                  <h3 className="text-sm font-bold text-white group-hover:text-blue-300 transition-colors">
-                    New Code Workspace
+                  <h3 className="text-sm font-bold text-white group-hover:text-blue-300 transition-colors flex items-center justify-between">
+                    <span>New Code Workspace</span>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 font-mono">Monaco IDE</span>
                   </h3>
-                  <p className="text-xs text-gray-400 mt-1 leading-normal">
+                  <p className="text-xs text-gray-400 mt-1.5 leading-relaxed">
                     Launch an isolated Monaco editor & WebContainer sandbox with real-time peer sync.
                   </p>
-                  <div className="mt-3 flex items-center text-xs font-semibold text-blue-400 group-hover:translate-x-1 transition-transform">
+                  <div className="mt-3.5 flex items-center text-xs font-semibold text-blue-400 group-hover:translate-x-1 transition-transform">
                     <span>Create Workspace &rarr;</span>
                   </div>
                 </div>
@@ -609,18 +624,21 @@ export default function Dashboard() {
                 {/* 3. Direct Discussion */}
                 <div
                   onClick={() => setShowNewChat(true)}
-                  className="p-5 rounded-2xl bg-gradient-to-br from-[#121624] to-[#0c0f17] border border-emerald-500/20 hover:border-emerald-500/50 hover:shadow-xl hover:shadow-emerald-500/10 transition-all duration-300 cursor-pointer group"
+                  className="p-5 rounded-2xl bg-gradient-to-br from-[#101424] to-[#0a0d14] border border-emerald-500/20 hover:border-emerald-500/50 hover:shadow-2xl hover:shadow-emerald-500/15 transition-all duration-300 cursor-pointer group"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-lg mb-3 group-hover:scale-110 transition-transform">
-                    💬
+                  <div className="w-11 h-11 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 mb-3 group-hover:scale-110 group-hover:bg-emerald-500/20 transition-all">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                    </svg>
                   </div>
-                  <h3 className="text-sm font-bold text-white group-hover:text-emerald-300 transition-colors">
-                    Direct Discussion
+                  <h3 className="text-sm font-bold text-white group-hover:text-emerald-300 transition-colors flex items-center justify-between">
+                    <span>Direct Discussion</span>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-mono">1-on-1 P2P</span>
                   </h3>
-                  <p className="text-xs text-gray-400 mt-1 leading-normal">
-                    Start a real-time private channel with team members over Redis Pub/Sub.
+                  <p className="text-xs text-gray-400 mt-1.5 leading-relaxed">
+                    Start a real-time private discussion with encrypted peer routing over Redis Pub/Sub.
                   </p>
-                  <div className="mt-3 flex items-center text-xs font-semibold text-emerald-400 group-hover:translate-x-1 transition-transform">
+                  <div className="mt-3.5 flex items-center text-xs font-semibold text-emerald-400 group-hover:translate-x-1 transition-transform">
                     <span>Find Users &rarr;</span>
                   </div>
                 </div>
@@ -628,21 +646,65 @@ export default function Dashboard() {
                 {/* 4. Team Room */}
                 <div
                   onClick={() => setShowNewGroup(true)}
-                  className="p-5 rounded-2xl bg-gradient-to-br from-[#121624] to-[#0c0f17] border border-cyan-500/20 hover:border-cyan-500/50 hover:shadow-xl hover:shadow-cyan-500/10 transition-all duration-300 cursor-pointer group"
+                  className="p-5 rounded-2xl bg-gradient-to-br from-[#101424] to-[#0a0d14] border border-cyan-500/20 hover:border-cyan-500/50 hover:shadow-2xl hover:shadow-cyan-500/15 transition-all duration-300 cursor-pointer group"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-lg mb-3 group-hover:scale-110 transition-transform">
-                    👥
+                  <div className="w-11 h-11 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 mb-3 group-hover:scale-110 group-hover:bg-cyan-500/20 transition-all">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
                   </div>
-                  <h3 className="text-sm font-bold text-white group-hover:text-cyan-300 transition-colors">
-                    Team Workspace
+                  <h3 className="text-sm font-bold text-white group-hover:text-cyan-300 transition-colors flex items-center justify-between">
+                    <span>Team Workspace</span>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 font-mono">Multi-Cursor</span>
                   </h3>
-                  <p className="text-xs text-gray-400 mt-1 leading-normal">
-                    Assemble a multi-user collaborative group with live presence and code sharing.
+                  <p className="text-xs text-gray-400 mt-1.5 leading-relaxed">
+                    Assemble a multi-user collaborative group room with live presence and code sharing.
                   </p>
-                  <div className="mt-3 flex items-center text-xs font-semibold text-cyan-400 group-hover:translate-x-1 transition-transform">
+                  <div className="mt-3.5 flex items-center text-xs font-semibold text-cyan-400 group-hover:translate-x-1 transition-transform">
                     <span>Create Room &rarr;</span>
                   </div>
                 </div>
+              </div>
+
+              {/* QUICK STARTER TEMPLATES */}
+              <div className="flex items-center gap-2 flex-wrap justify-center text-xs text-gray-400">
+                <span className="text-gray-500 font-semibold uppercase tracking-wider text-[10px]">Instant Starters:</span>
+                <button
+                  onClick={() => {
+                    setAIProjectName("Express-Mongo-API");
+                    setAIDescription("Production ready REST API with JWT authentication and Mongoose models");
+                    setAITechStack("Node.js + Express + MongoDB");
+                    setShowAIBuilder(true);
+                  }}
+                  className="px-3 py-1 rounded-lg bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.06] hover:border-white/[0.15] text-gray-300 transition flex items-center gap-1.5"
+                >
+                  <span className="text-emerald-400">⚡</span>
+                  <span>Express + Mongo API</span>
+                </button>
+                <button
+                  onClick={() => {
+                    setAIProjectName("React19-Monaco-Mesh");
+                    setAIDescription("Collaborative code editor sandbox with WebContainer runtime");
+                    setAITechStack("React + Vite + Tailwind + WebContainer");
+                    setShowAIBuilder(true);
+                  }}
+                  className="px-3 py-1 rounded-lg bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.06] hover:border-white/[0.15] text-gray-300 transition flex items-center gap-1.5"
+                >
+                  <span className="text-blue-400">⚛️</span>
+                  <span>React 19 + Monaco</span>
+                </button>
+                <button
+                  onClick={() => {
+                    setAIProjectName("Redis-PubSub-Cluster");
+                    setAIDescription("Horizontally scaled Socket.IO microservice with BullMQ job queues");
+                    setAITechStack("Node.js + Socket.IO + Redis 7 + BullMQ");
+                    setShowAIBuilder(true);
+                  }}
+                  className="px-3 py-1 rounded-lg bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.06] hover:border-white/[0.15] text-gray-300 transition flex items-center gap-1.5"
+                >
+                  <span className="text-purple-400">🔄</span>
+                  <span>Redis PubSub Mesh</span>
+                </button>
               </div>
 
               {/* ARCHITECTURE METRICS STATUS BAR */}

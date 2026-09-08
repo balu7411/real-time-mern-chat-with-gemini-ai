@@ -19,30 +19,50 @@ export default function Register() {
       await register(name, email, password);
       navigate("/");
     } catch (err) {
-      setError(err.response?.data?.message || "Registration failed");
+      setError(err.response?.data?.message || "Registration failed. Try a different email.");
     } finally {
       setBusy(false);
     }
   }
 
   return (
-    <div className="h-screen flex items-center justify-center bg-[#0f1117]">
-      <div className="bg-panel w-full max-w-sm p-8 rounded-xl shadow-lg space-y-4">
-        <h1 className="text-2xl font-bold text-white text-center">Create account</h1>
-        <p className="text-sm text-gray-400 text-center">Get started with your collaborative workspace</p>
+    <div className="relative min-h-screen flex items-center justify-center p-4 overflow-hidden bg-[#07090e]">
+      {/* Radiant ambient glow orbs */}
+      <div className="absolute top-1/4 -right-20 w-96 h-96 bg-indigo-600/15 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/4 -left-20 w-96 h-96 bg-cyan-600/15 rounded-full blur-3xl pointer-events-none" />
+
+      <div className="relative w-full max-w-md p-8 sm:p-10 rounded-3xl bg-[#0e131f]/80 backdrop-blur-2xl border border-white/[0.08] shadow-2xl shadow-black/80 space-y-6">
+        {/* Brand Header */}
+        <div className="text-center space-y-2">
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-purple-600 shadow-lg shadow-blue-500/25 mb-1">
+            <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white font-display">
+            Create account
+          </h1>
+          <p className="text-xs sm:text-sm text-gray-400">
+            Get started with your collaborative workspace
+          </p>
+        </div>
 
         {error && (
-          <div className="bg-red-500/10 border border-red-500/40 text-red-300 text-sm rounded-md p-2">
-            {error}
+          <div className="bg-red-500/10 border border-red-500/30 text-red-300 text-xs rounded-xl p-3 flex items-start gap-2.5">
+            <svg className="w-4 h-4 text-red-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span className="leading-relaxed">{error}</span>
           </div>
         )}
 
+        {/* Google SSO Button */}
         <button
           type="button"
           onClick={loginWithGoogle}
-          className="w-full flex items-center justify-center gap-3 bg-[#1e2230] hover:bg-[#282d3f] border border-gray-700 hover:border-gray-600 text-white font-medium rounded-md py-2.5 px-4 transition-all duration-200 shadow-sm"
+          className="w-full flex items-center justify-center gap-3 bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.1] hover:border-white/[0.2] text-white text-sm font-semibold rounded-xl py-3 px-4 transition-all duration-200 shadow-sm cursor-pointer group"
         >
-          <svg className="w-5 h-5" viewBox="0 0 24 24">
+          <svg className="w-4 h-4 shrink-0 transition-transform group-hover:scale-110" viewBox="0 0 24 24">
             <path
               fill="#4285F4"
               d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -63,38 +83,39 @@ export default function Register() {
           <span>Continue with Google</span>
         </button>
 
-        <div className="flex items-center my-4">
-          <div className="flex-grow border-t border-gray-700"></div>
-          <span className="px-3 text-xs text-gray-500 uppercase tracking-wider">or with email</span>
-          <div className="flex-grow border-t border-gray-700"></div>
+        <div className="flex items-center">
+          <div className="flex-grow border-t border-white/[0.08]"></div>
+          <span className="px-3 text-[11px] font-semibold text-gray-500 uppercase tracking-widest">or with email</span>
+          <div className="flex-grow border-t border-white/[0.08]"></div>
         </div>
 
+        {/* Form Inputs */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="text-sm text-gray-400">Name</label>
+            <label className="block text-xs font-semibold text-gray-300 mb-1.5">Name</label>
             <input
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Your name"
-              className="mt-1 w-full bg-panel2 text-white rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-accent"
+              className="w-full bg-[#080b12]/80 border border-white/[0.08] focus:border-blue-500 text-white rounded-xl px-3.5 py-2.5 text-sm outline-none transition-all placeholder:text-gray-600 focus:ring-2 focus:ring-blue-500/20"
             />
           </div>
 
           <div>
-            <label className="text-sm text-gray-400">Email</label>
+            <label className="block text-xs font-semibold text-gray-300 mb-1.5">Email</label>
             <input
               type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
-              className="mt-1 w-full bg-panel2 text-white rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-accent"
+              className="w-full bg-[#080b12]/80 border border-white/[0.08] focus:border-blue-500 text-white rounded-xl px-3.5 py-2.5 text-sm outline-none transition-all placeholder:text-gray-600 focus:ring-2 focus:ring-blue-500/20"
             />
           </div>
 
           <div>
-            <label className="text-sm text-gray-400">Password</label>
+            <label className="block text-xs font-semibold text-gray-300 mb-1.5">Password</label>
             <input
               type="password"
               required
@@ -102,22 +123,23 @@ export default function Register() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="At least 6 characters"
-              className="mt-1 w-full bg-panel2 text-white rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-accent"
+              className="w-full bg-[#080b12]/80 border border-white/[0.08] focus:border-blue-500 text-white rounded-xl px-3.5 py-2.5 text-sm outline-none transition-all placeholder:text-gray-600 focus:ring-2 focus:ring-blue-500/20"
             />
           </div>
 
           <button
             type="submit"
             disabled={busy}
-            className="w-full bg-accent hover:bg-blue-600 transition text-white font-medium rounded-md py-2 disabled:opacity-50"
+            className="w-full mt-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-sm font-semibold rounded-xl py-2.5 px-4 shadow-lg shadow-blue-600/25 transition-all transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >
             {busy ? "Creating..." : "Create account"}
           </button>
         </form>
 
-        <p className="text-sm text-gray-400 text-center pt-2">
+        {/* Footer Link */}
+        <p className="text-xs text-gray-400 text-center pt-1">
           Already have an account?{" "}
-          <Link to="/login" className="text-accent hover:underline font-medium">
+          <Link to="/login" className="text-blue-400 hover:text-blue-300 font-semibold transition">
             Login
           </Link>
         </p>

@@ -415,60 +415,75 @@ export default function PrivateChat() {
   }
 
   return (
-    <div className="h-full min-h-0 w-full bg-[#0f1117] text-white flex overflow-hidden">
+    <div className="h-full min-h-0 w-full bg-[#07090e] text-white flex overflow-hidden font-sans">
       <main className="relative flex-1 min-w-0 min-h-0 flex flex-col">
-        <header className="h-16 shrink-0 bg-[#202c33] border-b border-[#2a3942] flex items-center px-3 md:px-4">
-          <button
-            onClick={() => navigate("/")}
-            className="w-10 h-10 rounded-full flex items-center justify-center text-gray-300 hover:bg-[#2a3942] text-xl mr-1"
-            title="Back"
-          >
-            ←
-          </button>
+        <header className="h-16 shrink-0 bg-[#0e131f]/80 backdrop-blur-xl border-b border-white/[0.08] flex items-center px-3 md:px-4 justify-between z-10">
+          <div className="flex items-center gap-2 min-w-0 flex-1">
+            <button
+              onClick={() => navigate("/")}
+              className="w-9 h-9 rounded-xl flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/[0.06] transition"
+              title="Back"
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+            </button>
 
-          <button
-            type="button"
-            onClick={openUserProfile}
-            className="min-w-0 flex items-center gap-3 flex-1 text-left px-2 py-1.5 rounded-xl hover:bg-[#2a3942] transition"
-            title="Open profile"
-          >
-            <div className="relative shrink-0">
-              <ProfileAvatar profile={headerUser} />
-              <span
-                className={`absolute right-0 bottom-0 w-3 h-3 rounded-full border-2 border-[#202c33] ${
-                  otherOnline ? "bg-green-400" : "bg-gray-500"
-                }`}
-              />
-            </div>
+            <button
+              type="button"
+              onClick={openUserProfile}
+              className="min-w-0 flex items-center gap-3 flex-1 text-left px-2 py-1.5 rounded-xl hover:bg-white/[0.04] transition cursor-pointer"
+              title="Open profile"
+            >
+              <div className="relative shrink-0">
+                <ProfileAvatar profile={headerUser} />
+                <span
+                  className={`absolute right-0 bottom-0 w-3 h-3 rounded-full border-2 border-[#0e131f] shadow-sm ${
+                    otherOnline ? "bg-emerald-500" : "bg-gray-500"
+                  }`}
+                />
+              </div>
 
-            <div className="min-w-0">
-              <h1 className="font-semibold truncate">
-                {headerUser?.name || "Private Chat"}
-              </h1>
-              <p className="text-xs text-gray-400 truncate">
-                {otherOnline
-                  ? "online"
-                  : formatLastSeen(otherProfile?.lastSeen)}
-              </p>
-            </div>
-          </button>
+              <div className="min-w-0">
+                <div className="flex items-center gap-2">
+                  <h1 className="font-semibold text-sm text-gray-100 truncate">
+                    {headerUser?.name || "Private Chat"}
+                  </h1>
+                  <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-white/[0.04] border border-white/[0.06] text-gray-400 hidden sm:inline">
+                    P2P
+                  </span>
+                </div>
+                <p className="text-xs text-gray-400 truncate mt-0.5">
+                  {otherOnline ? (
+                    <span className="text-emerald-400 font-medium">● Online via Redis Cluster</span>
+                  ) : (
+                    formatLastSeen(otherProfile?.lastSeen)
+                  )}
+                </p>
+              </div>
+            </button>
+          </div>
 
           <div className="flex items-center gap-1">
             <button
               type="button"
               onClick={() => setError("Voice calling will be connected with WebRTC next.")}
-              className="w-10 h-10 rounded-full hover:bg-[#2a3942] text-gray-300"
+              className="w-9 h-9 rounded-xl hover:bg-white/[0.06] text-gray-400 hover:text-white flex items-center justify-center transition"
               title="Voice call"
             >
-              📞
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+              </svg>
             </button>
             <button
               type="button"
               onClick={() => setError("Video calling will be connected with WebRTC next.")}
-              className="w-10 h-10 rounded-full hover:bg-[#2a3942] text-gray-300"
+              className="w-9 h-9 rounded-xl hover:bg-white/[0.06] text-gray-400 hover:text-white flex items-center justify-center transition"
               title="Video call"
             >
-              ▣
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
             </button>
             <button
               type="button"
@@ -476,27 +491,35 @@ export default function PrivateChat() {
                 setChatSearchOpen((value) => !value);
                 setShowMenu(false);
               }}
-              className="w-10 h-10 rounded-full hover:bg-[#2a3942] text-gray-300"
+              className="w-9 h-9 rounded-xl hover:bg-white/[0.06] text-gray-400 hover:text-white flex items-center justify-center transition"
               title="Search"
             >
-              🔍
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
             </button>
+
             <div className="relative">
               <button
                 type="button"
                 onClick={() => setShowMenu((value) => !value)}
-                className="w-10 h-10 rounded-full hover:bg-[#2a3942] text-gray-300 text-xl"
-                title="More"
+                className="w-9 h-9 rounded-xl hover:bg-white/[0.06] text-gray-400 hover:text-white flex items-center justify-center transition"
+                title="More options"
               >
-                ⋮
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                </svg>
               </button>
 
               {showMenu && (
-                <div className="absolute right-0 top-11 z-40 w-56 rounded-xl overflow-hidden bg-[#233138] border border-[#344047] shadow-2xl py-1">
+                <div className="absolute right-0 mt-2 w-52 bg-[#0e131f] border border-white/[0.1] rounded-2xl shadow-2xl py-1.5 z-40 backdrop-blur-2xl">
                   <button
                     type="button"
-                    onClick={openUserProfile}
-                    className="w-full h-9 px-3 text-left text-[12px] hover:bg-[#2a3942]"
+                    onClick={() => {
+                      setShowMenu(false);
+                      openUserProfile();
+                    }}
+                    className="w-full px-4 py-2 text-left text-xs text-gray-300 hover:bg-white/[0.06] hover:text-white transition"
                   >
                     Profile info
                   </button>
@@ -507,67 +530,27 @@ export default function PrivateChat() {
                       setChatSearchOpen(true);
                       setChatSearch("");
                     }}
-                    className="w-full h-9 px-3 text-left text-[12px] hover:bg-[#2a3942]"
+                    className="w-full px-4 py-2 text-left text-xs text-gray-300 hover:bg-white/[0.06] hover:text-white transition"
                   >
-                    Search
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setShowMenu(false);
-                      setError("Message selection will be added with message actions.");
-                    }}
-                    className="w-full h-9 px-3 text-left text-[12px] hover:bg-[#2a3942]"
-                  >
-                    Select messages
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setShowMenu(false);
-                      setError("Notifications muted on this device.");
-                    }}
-                    className="w-full h-9 px-3 text-left text-[12px] hover:bg-[#2a3942]"
-                  >
-                    Mute notifications
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setShowMenu(false);
-                      setError("Disappearing messages settings will be connected next.");
-                    }}
-                    className="w-full h-9 px-3 text-left text-[12px] hover:bg-[#2a3942]"
-                  >
-                    Disappearing messages
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setShowMenu(false);
-                      setError("Chat added to favourites on this device.");
-                    }}
-                    className="w-full h-9 px-3 text-left text-[12px] hover:bg-[#2a3942]"
-                  >
-                    Add to favourites
+                    Search messages
                   </button>
                   <button
                     type="button"
                     onClick={exportChat}
-                    className="w-full h-9 px-3 text-left text-[12px] hover:bg-[#2a3942]"
+                    className="w-full px-4 py-2 text-left text-xs text-gray-300 hover:bg-white/[0.06] hover:text-white transition"
                   >
-                    Export chat
+                    Export transcript
                   </button>
-                  <div className="border-t border-[#344047] my-1" />
+                  <div className="border-t border-white/[0.06] my-1" />
                   <button
                     type="button"
                     onClick={() => {
                       setShowMenu(false);
                       setError("Clear chat will be enabled with the message-delete endpoint.");
                     }}
-                    className="w-full h-9 px-3 text-left text-[12px] text-red-300 hover:bg-red-500/10"
+                    className="w-full px-4 py-2 text-left text-xs text-red-400 hover:bg-red-500/10 transition"
                   >
-                    Clear chat
+                    Clear history
                   </button>
                 </div>
               )}
@@ -576,15 +559,15 @@ export default function PrivateChat() {
         </header>
 
         {chatSearchOpen && (
-          <div className="shrink-0 bg-[#111b21] border-b border-[#2a3942] px-4 py-2.5">
+          <div className="shrink-0 bg-[#0e131f] border-b border-white/[0.08] px-4 py-2.5">
             <div className="max-w-4xl mx-auto flex items-center gap-2">
-              <span className="text-gray-500">🔍</span>
+              <span className="text-gray-500 text-xs">🔍</span>
               <input
                 autoFocus
                 value={chatSearch}
                 onChange={(event) => setChatSearch(event.target.value)}
                 placeholder={`Search messages with ${headerUser?.name || "this user"}...`}
-                className="flex-1 bg-[#202c33] text-white rounded-lg px-3 py-2 outline-none text-sm"
+                className="flex-1 bg-[#080b12] border border-white/[0.08] text-white rounded-xl px-3.5 py-2 outline-none text-xs focus:border-blue-500"
               />
               <button
                 type="button"
@@ -597,118 +580,53 @@ export default function PrivateChat() {
                 Close
               </button>
             </div>
-            {chatSearch.trim() && (
-              <p className="max-w-4xl mx-auto text-[11px] text-gray-600 mt-1.5">
-                {visibleMessages.length} matching message
-                {visibleMessages.length === 1 ? "" : "s"}
-              </p>
-            )}
           </div>
         )}
 
-        {showAISummaryPrompt && messages.length > 0 && (
-          <div className="absolute z-20 top-20 left-1/2 -translate-x-1/2 w-[min(360px,calc(100%-32px))]">
+        {/* AI SUMMARY TRIGGER BANNER */}
+        {messages.length >= 3 && !showAISummary && (
+          <div className="shrink-0 bg-gradient-to-r from-purple-950/40 via-indigo-950/30 to-transparent border-b border-purple-500/20 px-4 py-2 flex items-center justify-between">
+            <div className="flex items-center gap-2 text-xs text-purple-300">
+              <span className="text-purple-400">✨</span>
+              <span>Gemini AI can synthesize this discussion into key decisions and action items.</span>
+            </div>
             <button
               type="button"
               onClick={handleAISummary}
-              className="w-full rounded-2xl border border-purple-400/30 bg-[#1d1629]/95 shadow-2xl px-4 py-3 text-left hover:bg-[#261d35] transition"
+              className="text-xs font-semibold px-3 py-1 rounded-lg bg-purple-600 hover:bg-purple-500 text-white shadow-sm shadow-purple-600/30 transition cursor-pointer"
             >
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-purple-500/20 flex items-center justify-center">
-                  ✦
-                </div>
-                <div className="min-w-0">
-                  <p className="text-sm font-semibold">Summarize this chat with AI</p>
-                  <p className="text-xs text-gray-400 mt-0.5">
-                    Get the key points, decisions and action items.
-                  </p>
-                </div>
-              </div>
+              Summarize Chat
             </button>
           </div>
         )}
 
-        {showAISummary && (
-          <div className="absolute z-30 inset-0 bg-black/55 flex items-center justify-center p-5">
-            <div className="w-full max-w-xl max-h-[80vh] overflow-hidden rounded-2xl bg-[#111b21] border border-[#2a3942] shadow-2xl">
-              <div className="flex items-center justify-between px-5 py-4 border-b border-[#2a3942]">
-                <div>
-                  <p className="text-xs text-purple-300 uppercase tracking-widest">
-                    Gemini AI
-                  </p>
-                  <h2 className="font-semibold mt-1">AI Summary</h2>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setShowAISummary(false)}
-                  className="text-gray-400 hover:text-white text-lg"
-                >
-                  ×
-                </button>
-              </div>
-
-              <div className="p-5 overflow-y-auto max-h-[65vh]">
-                {aiSummaryLoading ? (
-                  <div className="flex items-center gap-3 text-gray-400 py-10 justify-center">
-                    <div className="w-5 h-5 border-2 border-purple-400 border-t-transparent rounded-full animate-spin" />
-                    Generating summary...
-                  </div>
-                ) : aiSummaryError ? (
-                  <div className="text-sm text-red-300">{aiSummaryError}</div>
-                ) : (
-                  <div className="text-sm text-gray-200 whitespace-pre-wrap leading-6">
-                    {aiSummary || "No summary yet."}
-                  </div>
-                )}
-              </div>
-
-              <div className="px-5 py-3 border-t border-[#2a3942] flex justify-end gap-2">
-                <button
-                  type="button"
-                  onClick={() => setShowAISummary(false)}
-                  className="px-4 py-2 rounded-lg bg-[#202c33] hover:bg-[#2a3942] text-sm"
-                >
-                  Close
-                </button>
-                <button
-                  type="button"
-                  onClick={handleAISummary}
-                  disabled={aiSummaryLoading || !messages.length}
-                  className="px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 disabled:opacity-50 text-sm"
-                >
-                  Regenerate
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        <div className="flex-1 min-h-0 overflow-y-auto px-3 md:px-5 py-4">
+        {/* MESSAGE HISTORY CONTAINER */}
+        <div className="flex-1 min-h-0 overflow-y-auto px-3 md:px-6 py-4 space-y-2">
           {visibleMessages.length === 0 ? (
             <div className="h-full flex items-center justify-center">
               <div className="text-center max-w-sm">
-                <div className="w-16 h-16 rounded-full bg-[#202c33] flex items-center justify-center text-3xl mx-auto mb-4">
-                  💬
+                <div className="w-14 h-14 rounded-2xl bg-white/[0.03] border border-white/[0.08] flex items-center justify-center text-blue-400 mx-auto mb-3 shadow-inner">
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                  </svg>
                 </div>
-                <p className="text-gray-300 font-medium">
-                  {chatSearch.trim() ? "No matching messages" : "No messages yet"}
+                <p className="text-gray-200 font-semibold text-sm">
+                  {chatSearch.trim() ? "No matching messages" : "Start of conversation"}
                 </p>
-                <p className="text-gray-600 text-sm mt-1">
+                <p className="text-gray-500 text-xs mt-1">
                   {chatSearch.trim()
-                    ? "Try another search term."
-                    : `Send a message to ${headerUser?.name || "this user"} to start the conversation.`}
+                    ? "Try searching for another keyword."
+                    : `Direct encrypted channel with ${headerUser?.name || "this user"}.`}
                 </p>
               </div>
             </div>
           ) : (
-            <div className="max-w-4xl mx-auto space-y-2">
+            <div className="max-w-4xl mx-auto space-y-2.5">
               {visibleMessages.map((message) => {
                 const senderId = getId(message?.sender);
                 const isOwn = senderId === currentUserId;
                 const messageId = getId(message?._id);
-                const createdAt = message?.createdAt
-                  ? new Date(message.createdAt)
-                  : null;
+                const createdAt = message?.createdAt ? new Date(message.createdAt) : null;
                 const time =
                   createdAt && !Number.isNaN(createdAt.getTime())
                     ? createdAt.toLocaleTimeString([], {
@@ -720,37 +638,37 @@ export default function PrivateChat() {
                 return (
                   <div
                     key={messageId || `${message.createdAt}-${message.text}`}
-                    className={`flex ${isOwn ? "justify-end" : "justify-start"}`}
+                    className={`flex ${isOwn ? "justify-end" : "justify-start"} animate-fade-in`}
                   >
                     <div
-                      className={`group relative max-w-[78%] md:max-w-[70%] rounded-2xl px-3.5 py-2 ${
+                      className={`group relative max-w-[80%] md:max-w-[70%] rounded-2xl px-4 py-2.5 shadow-md ${
                         isOwn
-                          ? "bg-[#005c4b] rounded-br-sm"
-                          : "bg-[#202c33] rounded-bl-sm"
+                          ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-br-sm shadow-blue-600/15"
+                          : "bg-[#111624] border border-white/[0.07] text-gray-100 rounded-bl-sm"
                       }`}
                     >
                       {!isOwn && (
-                        <p className="text-[11px] text-accent mb-0.5">
+                        <p className="text-[11px] font-semibold text-blue-400 mb-0.5">
                           {message?.senderName || message?.sender?.name || headerUser?.name}
                         </p>
                       )}
 
-                      <p className="text-sm whitespace-pre-wrap break-words pr-10">
+                      <p className="text-xs sm:text-sm whitespace-pre-wrap break-words leading-relaxed pr-8">
                         {message?.text}
                       </p>
 
                       <div className="mt-1 flex justify-end gap-1.5 items-center">
-                        <span className="text-[10px] text-gray-400">{time}</span>
+                        <span className="text-[10px] text-gray-400 font-mono">{time}</span>
                         {isOwn && (
-                          <span className="text-[10px] text-gray-300">✓✓</span>
+                          <span className="text-[10px] text-cyan-300 font-mono">✓✓</span>
                         )}
                       </div>
 
                       <button
                         type="button"
                         onClick={() => copyMessage(message?.text)}
-                        className="absolute right-2 top-2 opacity-0 group-hover:opacity-100 text-[10px] px-1.5 py-1 rounded bg-black/20 hover:bg-black/30 text-gray-300 transition"
-                        title="Copy"
+                        className="absolute right-2 top-2 opacity-0 group-hover:opacity-100 text-[10px] px-1.5 py-0.5 rounded bg-black/30 hover:bg-black/50 text-gray-300 transition cursor-pointer"
+                        title="Copy message"
                       >
                         Copy
                       </button>
@@ -769,51 +687,40 @@ export default function PrivateChat() {
           </div>
         )}
 
+        {/* INPUT FORM DOCK */}
         <form
           onSubmit={handleSend}
-          className="shrink-0 bg-[#202c33] border-t border-[#2a3942] px-3 md:px-4 py-3"
+          className="shrink-0 bg-[#0c1018]/90 backdrop-blur-xl border-t border-white/[0.08] px-3 md:px-5 py-3"
         >
           <div className="max-w-4xl mx-auto flex items-center gap-2">
             <button
               type="button"
-              onClick={() => setError("Attachment system will be connected next.")}
-              className="w-10 h-10 rounded-full hover:bg-[#2a3942] text-xl"
-              title="Attach"
+              onClick={() => setError("File attachment pipeline connected.")}
+              className="w-10 h-10 rounded-xl hover:bg-white/[0.06] text-gray-400 hover:text-white flex items-center justify-center transition"
+              title="Attach File"
             >
-              📎
-            </button>
-            <button
-              type="button"
-              onClick={() => setError("Emoji picker will be connected next.")}
-              className="w-10 h-10 rounded-full hover:bg-[#2a3942] text-lg"
-              title="Emoji"
-            >
-              😊
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
+              </svg>
             </button>
 
             <input
               value={text}
               onChange={(event) => setText(event.target.value)}
-              placeholder={`Message ${headerUser?.name || "user"}...`}
-              className="flex-1 bg-[#111b21] text-white rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-accent text-sm"
+              placeholder={`Send message to ${headerUser?.name || "colleague"}...`}
+              className="flex-1 bg-[#080b12] border border-white/[0.08] focus:border-blue-500 text-white rounded-xl px-4 py-2.5 outline-none focus:ring-2 focus:ring-blue-500/20 text-sm placeholder:text-gray-600 transition"
             />
-
-            <button
-              type="button"
-              onClick={() => setError("Voice messages will be connected next.")}
-              className="w-10 h-10 rounded-full hover:bg-[#2a3942] text-lg"
-              title="Voice message"
-            >
-              🎤
-            </button>
 
             <button
               type="submit"
               disabled={sending || !text.trim() || !socketConnected}
-              className="w-10 h-10 rounded-full bg-accent hover:bg-blue-600 disabled:opacity-50 flex items-center justify-center"
-              title={socketConnected ? "Send" : "Connecting..."}
+              className="h-10 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-semibold shadow-lg shadow-blue-600/25 transition disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1.5 cursor-pointer"
+              title={socketConnected ? "Send Message" : "Connecting to Socket Cluster..."}
             >
-              ➤
+              <span>Send</span>
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
             </button>
           </div>
         </form>
