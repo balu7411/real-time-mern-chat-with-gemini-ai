@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Editor from "@monaco-editor/react";
 import api from "../api/axios";
 
@@ -35,6 +35,18 @@ export default function CodeViewer({
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [saveError, setSaveError] = useState("");
+  const editorRef = useRef(null);
+  const monacoRef = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      // Memory Leak Eradication: Dispose Monaco editor and detach listeners on unmount
+      if (editorRef.current) {
+        editorRef.current.dispose();
+        editorRef.current = null;
+      }
+    };
+  }, []);
 
   useEffect(() => {
     setCode(file?.content || "");
@@ -139,6 +151,10 @@ export default function CodeViewer({
           height="100%"
           language={language}
           value={code}
+          onMount={(editor, monaco) => {
+            editorRef.current = editor;
+            monacoRef.current = monaco;
+          }}
           onChange={(value) => {
             setCode(value || "");
             setSaved(false);

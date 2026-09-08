@@ -31,6 +31,8 @@ const app = express();
 // CORS
 // ----------------------------------------------------
 
+const correlationMiddleware = require("./middleware/correlationMiddleware");
+
 app.use(
   cors({
     origin: CLIENT_URL,
@@ -38,17 +40,25 @@ app.use(
   })
 );
 
+const { securityHeadersMiddleware } = require("./src/security/rbacMiddleware");
+
 app.use(express.json({ limit: "2mb" }));
+app.use(correlationMiddleware);
+app.use(securityHeadersMiddleware);
 
 // ----------------------------------------------------
 // Health check
 // ----------------------------------------------------
+
+const { metricsEndpoint } = require("./src/monitoring/metrics");
 
 app.get("/api/health", (req, res) => {
   res.json({
     status: "ok",
   });
 });
+
+app.get("/metrics", metricsEndpoint);
 
 // ----------------------------------------------------
 // REST API routes
@@ -283,6 +293,14 @@ const io = new Server(server, {
     credentials: true,
   },
 });
+
+// Modular Distributed Real-Time Architecture (Phase 2 / Sprints 3 & 4)
+const SocketGateway = require("./src/realtime/socketGateway");
+const startAIWorker = require("./src/jobs/aiWorker");
+
+const socketGateway = new SocketGateway(io);
+socketGateway.init();
+startAIWorker(io);
 
 // ----------------------------------------------------
 // Online user tracking

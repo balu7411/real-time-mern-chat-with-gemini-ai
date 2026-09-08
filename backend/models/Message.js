@@ -45,4 +45,27 @@ const messageSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// High-Throughput Compound B-Tree Indexes (Sprint 7 / Days 91-94)
+messageSchema.index({ project: 1, createdAt: -1 });
+messageSchema.index({ conversation: 1, createdAt: -1 });
+messageSchema.index({ conversation: 1, _id: -1 });
+
+// Keyset Cursor-Based Pagination (Days 95-98)
+// Replaces O(N) skip/limit with O(1) indexed keyset seeking
+messageSchema.statics.paginateKeyset = async function ({ conversationId, projectId, lastSeenId, limit = 50 }) {
+  const query = {};
+  if (conversationId) query.conversation = conversationId;
+  if (projectId) query.project = projectId;
+
+  if (lastSeenId) {
+    query._id = { $lt: lastSeenId };
+  }
+
+  return this.find(query)
+    .sort({ _id: -1 })
+    .limit(limit)
+    .lean() // Bypasses Mongoose document overhead (Days 99-102)
+    .exec();
+};
+
 module.exports = mongoose.model("Message", messageSchema);

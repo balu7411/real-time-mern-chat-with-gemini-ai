@@ -6,6 +6,7 @@ import Register from "./pages/Register.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import ProjectWorkspace from "./pages/ProjectWorkspace.jsx";
 import Profile from "./pages/Profile.jsx";
+import GoogleCallback from "./pages/GoogleCallback.jsx";
 
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
@@ -34,6 +35,7 @@ export default function App() {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/auth/google/callback" element={<GoogleCallback />} />
 
       {/*
        * Dashboard is the messenger shell.

@@ -82,6 +82,24 @@ export default function WebContainerPreview({ files = [] }) {
 
     return () => {
       cancelled = true;
+
+      // Memory Leak Eradication Protocol (Section 1.3):
+      // Kill running process, detach listeners, and blank out iframe to release browser memory
+      if (processRef.current) {
+        try {
+          processRef.current.kill();
+        } catch (_) {}
+        processRef.current = null;
+      }
+
+      if (serverReadyHandlerRef.current && webContainerInstance) {
+        webContainerInstance.off("server-ready", serverReadyHandlerRef.current);
+        serverReadyHandlerRef.current = null;
+      }
+
+      if (iframeRef.current) {
+        iframeRef.current.src = "about:blank";
+      }
     };
   }, []);
 

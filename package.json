@@ -4,7 +4,7 @@
   "scripts": {
     "test:e2e:daily": "playwright test",
     "profile:memory": "node scripts/memory-profiler.js",
-    "repomix": "repomix",
+    "repomix": "npx -y repomix",
     "build:frontend": "npm --prefix frontend run build",
     "dev:frontend": "npm --prefix frontend run dev",
     "dev:backend": "npm --prefix backend run dev"

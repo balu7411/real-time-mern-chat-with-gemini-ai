@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mern-redis-cluster
+  namespace: production
+spec:
+  serviceName: mern-redis-cluster
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mern-redis
+  template:
+    metadata:
+      labels:
+        app: mern-redis
+    spec:
+      containers:
+        - name: redis
+          image: redis:7-alpine
+          command: ["redis-server", "--appendonly", "yes"]
+          ports:
+            - containerPort: 6379
+              name: redis
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "256Mi"
+            limits:
+              cpu: "1000m"
+              memory: "1Gi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mern-redis-cluster
+  namespace: production
+spec:
+  selector:
+    app: mern-redis
+  ports:
+    - port: 6379
+      targetPort: 6379

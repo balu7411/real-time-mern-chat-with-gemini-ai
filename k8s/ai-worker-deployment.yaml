@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mern-ai-workers
+  namespace: production
+  labels:
+    app: mern-ai-workers
+    tier: worker
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: mern-ai-workers
+  template:
+    metadata:
+      labels:
+        app: mern-ai-workers
+    spec:
+      containers:
+        - name: ai-worker
+          image: mern-ai-chat-backend:latest
+          command: ["node", "-e", "require('./src/jobs/aiWorker')(); console.log('AI Worker Pod Active');"]
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: REDIS_URL
+              value: "redis://mern-redis-cluster:6379"
+            - name: GEMINI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: mern-secrets
+                  key: gemini-api-key
+            - name: ANTHROPIC_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: mern-secrets
+                  key: anthropic-api-key
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: mern-secrets
+                  key: openai-api-key
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "512Mi"
+            limits:
+              cpu: "2000m"
+              memory: "2Gi"

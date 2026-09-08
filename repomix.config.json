@@ -1,0 +1,32 @@
+{
+  "output": {
+    "filePath": "repomix-output.xml",
+    "style": "xml",
+    "removeComments": false,
+    "removeEmptyLines": true,
+    "showLineNumbers": true,
+    "copyToClipboard": false,
+    "topFilesLength": 10
+  },
+  "include": [
+    "backend/**/*.js",
+    "frontend/src/**/*.{js,jsx,css}",
+    "e2e/**/*.js",
+    "package.json"
+  ],
+  "ignore": {
+    "useGitignore": true,
+    "useDefaultPatterns": true,
+    "customPatterns": [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/build/**",
+      "**/.env*",
+      "**/playwright-report/**",
+      "**/test-results/**"
+    ]
+  },
+  "security": {
+    "enableSecurityCheck": true
+  }
+}

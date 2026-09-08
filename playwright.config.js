@@ -18,10 +18,18 @@ module.exports = defineConfig({
       use: { ...devices["Desktop Chrome"] },
     },
   ],
-  webServer: {
-    command: "npm --prefix frontend run dev",
-    url: "http://localhost:5174",
-    reuseExistingServer: true,
-    timeout: 120000,
-  },
+  webServer: [
+    {
+      command: "npm --prefix backend run start",
+      url: "http://localhost:5000/api/health",
+      reuseExistingServer: true,
+      timeout: 120000,
+    },
+    {
+      command: "npm --prefix frontend run dev",
+      url: "http://localhost:5174",
+      reuseExistingServer: true,
+      timeout: 120000,
+    },
+  ],
 });

@@ -75,7 +75,13 @@ const projectSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    optimisticConcurrency: true, // Prevents concurrent overwrite race conditions (__v OCC)
   }
 );
+
+// High-Throughput Compound B-Tree Indexes (Sprint 7 / Days 91-94)
+projectSchema.index({ owner: 1, createdAt: -1 });
+projectSchema.index({ collaborators: 1 });
+projectSchema.index({ status: 1, priority: 1 });
 
 module.exports = mongoose.model("Project", projectSchema);
