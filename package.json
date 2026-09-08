@@ -1,5 +1,18 @@
 {
+  "name": "mern-ai-chat-master",
+  "version": "1.0.0",
+  "scripts": {
+    "test:e2e:daily": "playwright test",
+    "profile:memory": "node scripts/memory-profiler.js",
+    "repomix": "repomix",
+    "build:frontend": "npm --prefix frontend run build",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:backend": "npm --prefix backend run dev"
+  },
   "dependencies": {
     "socket.io-client": "^4.8.3"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0"
   }
 }
