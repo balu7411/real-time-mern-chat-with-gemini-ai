@@ -66,6 +66,21 @@ export function AuthProvider({ children }) {
     return res.data;
   }
 
+  async function handleGoogleSuccess(credential) {
+    const res = await api.post("/auth/google", { credential });
+
+    clearTokens();
+    sessionStorage.setItem("token", res.data.token);
+    setUser(res.data.user);
+
+    return res.data;
+  }
+
+  function loginWithGoogle() {
+    const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+    window.location.href = `${apiUrl}/auth/google`;
+  }
+
   function updateUser(nextUser) {
     setUser(nextUser);
   }
@@ -82,6 +97,8 @@ export function AuthProvider({ children }) {
         loading,
         login,
         register,
+        loginWithGoogle,
+        handleGoogleSuccess,
         logout,
         updateUser,
         getToken,

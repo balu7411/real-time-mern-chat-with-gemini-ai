@@ -98,6 +98,46 @@ The backend is refactored into strict concentric architectural rings:
 +------------------------------------+-------------------------------------------------------------+
 ```
 
+### 1.4. Daily Playwright Automated Verification Protocol (MANDATORY EVERY DAY)
+> [!IMPORTANT]
+> **Ironclad Engineering Rule:** Every single day of development (Day 1 through Day 180), after any code change or feature development is completed, an automated **Playwright** test script must execute to thoroughly test and analyze the application before the day's work is signed off.
+
+```
+[Developer finishes Day's Code]
+              │
+              ▼
+   [Run Playwright Script]
+              │
+      ┌───────┴──────────────────────────────────────────────┐
+      ▼                                                      ▼
+[Day's Feature Tests]                               [Full System Regression]
+- Validates that day's feature                       - Auth & Google OAuth flow
+- Checks edge cases & inputs                         - Real-time chat & WebSockets
+- Verifies API contracts                             - WebContainer & Monaco lifecycle
+      │                                                      │
+      └───────────────────────┬──────────────────────────────┘
+                              ▼
+                [Deep Automated Diagnostics]
+                - Zero console errors or unhandled rejections
+                - DOM node count checks (Memory leak scan)
+                - Network payload & status validation (200/201)
+                              │
+              ┌───────────────┴───────────────┐
+              ▼                               ▼
+       [All Tests Passed]             [Test Failure / Leak]
+       - Update Daily Log              - Block commit & halt signoff
+       - Merge Day's Branch            - Capture video, trace & heap
+       - Ready for Next Day            - Fix root cause immediately
+```
+
+### 1.5. Google OAuth 2.0 Single Sign-On (SSO) Architecture
+The authentication system supports native **"Continue with Google"** alongside traditional credentials:
+- **Frontend Flow:** Clean "Continue with Google" UI button rendered on `/login` and `/register` using Google Identity Services (GIS).
+- **Backend Flow:** `/api/auth/google` validates Google OAuth ID tokens via `google-auth-library` or OAuth2 v2 tokeninfo endpoint.
+- **Account Linking:** Matches incoming Google email to existing accounts. If new, creates a verified account with `authProvider: "google"`.
+- **Session Issuance:** Returns standard signed JWT and user session, ensuring complete parity with email/password logins.
+- **Testing:** Playwright mock auth journeys verify seamless token issuance, redirect handling, and session persistence.
+
 ---
 
 ## 2. SOLID Principles Implementation Matrix
@@ -140,13 +180,19 @@ Phase 1: Foundation      Phase 2: Decoupling     Phase 3: Zero-Leak IDE  Phase 4
 
 ### Phase 1: Foundation, Profiling & Type Safety (Days 1 – 30)
 
-#### Sprint 1 (Days 1 – 15): Baselines, Memory Profiling & MCP CI/CD Pipeline
-- **Goal:** Establish performance benchmarks, memory leak baselines, and integrate the MCP automated testing suite.
-- **Day 1–3:** Audit existing memory usage using Node.js `--inspect` and Chrome DevTools heap snapshots under simulated traffic. Record initial memory footprint.
-- **Day 4–6:** Set up automated repository packaging using **`repomix`** in GitHub Actions to monitor bundle size, tree-sitter AST complexity, and secret detection.
-- **Day 7–10:** Author initial **`playwright`** test harness covering authentication, real-time message exchange, project creation, and Monaco file editing.
+#### Sprint 1 (Days 1 – 15): Baselines, Memory Profiling, Google OAuth & Daily Playwright Pipeline
+- **Goal:** Establish performance benchmarks, implement Google Single Sign-On, and enforce the Daily Playwright Testing Protocol.
+- **Day 1–3:** Audit existing memory usage using Node.js `--inspect` and Chrome DevTools heap snapshots. Establish the core **`playwright`** test harness and daily test runner script (`npm run test:e2e:daily`).
+  - *Daily Playwright Verification:* Verify app boot, route navigation, and baseline memory consumption.
+- **Day 4–6:** Implement **Google OAuth 2.0 ("Continue with Google")**:
+  - Add Google SSO button on `Login.jsx` and `Register.jsx`.
+  - Implement `/api/auth/google` on the backend with ID token verification and user account linking (`googleId`).
+  - *Daily Playwright Verification:* Automated Playwright test verifying both Email/Password login and Google OAuth authentication flows.
+- **Day 7–10:** Set up automated repository packaging using **`repomix`** in GitHub Actions to monitor bundle size, tree-sitter AST complexity, and secret detection.
+  - *Daily Playwright Verification:* Automated test running across project creation and Monaco code editor editing.
 - **Day 11–13:** Implement structured logging (Winston + Correlation IDs) across all HTTP and Socket.IO events.
-- **Day 14–15:** Sprint 1 Review using **`superpowers`** code review checklist. Lock baseline metrics report.
+  - *Daily Playwright Verification:* Regression test ensuring zero unhandled rejections and valid log correlation IDs.
+- **Day 14–15:** Sprint 1 Review using **`superpowers`** code review checklist. Full Playwright regression pass across all Sprint 1 deliverables. Lock baseline metrics report.
 
 #### Sprint 2 (Days 16 – 30): TypeScript Migration & SOLID Core Domain Definition
 - **Goal:** Establish strict type safety and define Domain-Driven Design (DDD) contracts.
@@ -251,11 +297,20 @@ Phase 1: Foundation      Phase 2: Decoupling     Phase 3: Zero-Leak IDE  Phase 4
 
 ---
 
-## 5. Definition of Done (DoD) per Sprint
+## 5. Definition of Done (DoD)
 
+### 5.1. Daily Definition of Done (DDoD - Every Single Day)
+At the end of every single development day before code is signed off:
+1. **Daily Playwright Run:** Execute the automated Playwright verification test suite (`npm run test:e2e:daily`).
+2. **Day's Feature Validation:** The specific functionality developed on that day is 100% covered and verified by automated browser assertions.
+3. **Full Regression Check:** All existing capabilities (Google OAuth, Email/Password auth, Socket.IO rooms, Monaco Editor, WebContainer) pass with zero failures.
+4. **Clean Console & Heap Diagnostics:** Zero browser console errors, zero unhandled promise rejections, and zero detached DOM node growth.
+5. **Artifact Capture on Failure:** If any test fails, Playwright trace logs, failure screenshots, and execution videos are automatically saved, and resolving the failure blocks moving to the next day's task.
+
+### 5.2. Sprint Definition of Done (DoD per 15-Day Sprint)
 To guarantee engineering excellence, no sprint is marked complete unless:
 1. **Tests:** All new domain logic is developed using **`superpowers`** TDD with >90% unit test coverage.
-2. **E2E Verification:** Automated **`playwright`** test journeys pass with zero flaky steps.
+2. **E2E Verification:** Automated **`playwright`** test journeys pass with zero flaky steps across all supported browsers (Chromium, Firefox, WebKit).
 3. **Memory Profile:** Chrome DevTools & Node heap snapshot confirms zero memory leak retention.
 4. **Code Quality:** Zero linter warnings, 100% TypeScript compilation (`tsc --noEmit`), and code reviewed via **`superpowers`**.
 5. **Codebase Packing:** Run **`repomix`** to verify token budget and clean architectural boundaries.
