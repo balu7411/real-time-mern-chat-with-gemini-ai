@@ -1,5 +1,5 @@
 const express = require("express");
-const { register, login, googleAuth, getMe } = require("../controllers/authController");
+const { register, login, googleAuth, googleAuthRedirect, getMe } = require("../controllers/authController");
 const { protect } = require("../middleware/auth");
 
 const { validateBody } = require("../src/core/validation/validateMiddleware");
@@ -9,6 +9,7 @@ const router = express.Router();
 
 router.post("/register", validateBody(registerSchema), register);
 router.post("/login", validateBody(loginSchema), login);
+router.get("/google", googleAuthRedirect);
 router.post("/google", validateBody(googleAuthSchema), googleAuth);
 router.get("/me", protect, getMe);
 

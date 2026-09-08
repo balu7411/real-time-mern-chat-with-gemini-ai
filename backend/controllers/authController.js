@@ -254,11 +254,38 @@ async function getMe(req, res) {
   return res.json({ user: sanitizeUser(req.user) });
 }
 
+function googleAuthRedirect(req, res) {
+  const clientId = process.env.GOOGLE_CLIENT_ID;
+  const clientUrl = process.env.CLIENT_URL || "http://localhost:5174";
+  const redirectUri = `${clientUrl}/auth/google/callback`;
+
+  if (clientId) {
+    const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${encodeURIComponent(
+      redirectUri
+    )}&response_type=code&scope=openid%20email%20profile`;
+    return res.redirect(googleAuthUrl);
+  }
+
+  // Development / fallback mode: simulate Google SSO token exchange
+  const mockPayload = Buffer.from(
+    JSON.stringify({
+      email: "google.user@example.com",
+      name: "Google Explorer",
+      sub: "mock-google-id-123456789",
+      picture: "https://lh3.googleusercontent.com/a/default-user",
+    })
+  ).toString("base64");
+  const mockToken = `eyJhbGciOiJIUzI1NiJ9.${mockPayload}.signature`;
+
+  return res.redirect(`${redirectUri}?credential=${mockToken}`);
+}
+
 module.exports = {
   signToken,
   sanitizeUser,
   register,
   login,
   googleAuth,
+  googleAuthRedirect,
   getMe,
 };
