@@ -84,103 +84,83 @@ async function buildProjectWithAI({
   techStack = "React + Node.js + Express + MongoDB",
 }) {
   const genAI = getClient();
-
-  const model = genAI.getGenerativeModel({
-    model:
-      process.env.GEMINI_MODEL ||
-      "gemini-3.6-flash",
-
-    systemInstruction: `
-You are an AI Project Builder inside a collaborative software development platform.
-
-Your job is to generate a COMPLETE, SMALL, RUNNABLE software project from a user's description.
-
-Return STRICT JSON only.
-
-The JSON must have exactly this structure:
-
-{
-  "message": "short description of the generated project",
-  "files": [
-    {
-      "path": "relative/path/to/file",
-      "content": "complete file content"
-    }
-  ]
-}
-
-Rules:
-
-1. Generate complete file contents.
-2. Never use markdown code fences.
-3. Never put explanations outside JSON.
-4. All paths must be relative.
-5. Never use absolute paths.
-6. Never use ".." in file paths.
-7. Keep the project reasonably small.
-8. Generate clean and modular code.
-9. Make the generated project runnable.
-10. Include package.json when JavaScript/Node dependencies are required.
-11. Include a README.md.
-12. Do not include secrets, API keys or passwords.
-13. Prefer modern React with Vite for frontend projects.
-14. Use Node.js and Express for backend projects when backend functionality is required.
-15. Use MongoDB/Mongoose when persistent database functionality is requested.
-16. If the user asks for a frontend-only project, do not unnecessarily generate a backend.
-17. Use meaningful filenames and folder structures.
-18. Make sure imports match the generated file paths.
-`,
-  });
+  const modelsToTry = [
+    "gemini-flash-lite-latest",
+    "gemini-3.5-flash",
+    process.env.GEMINI_MODEL || "gemini-3.6-flash",
+  ];
 
   const prompt = `
-Build a project with the following information.
+Build a software project with the following requirements:
+Project Name: ${projectName}
+Technology: ${techStack}
+Requirements: ${description}
 
-Project name:
-${projectName}
-
-Technology:
-${techStack}
-
-Project requirements:
-${description}
-
-Generate the complete project files now.
+Generate clean, runnable code for the core application files.
 `;
 
-  const result = await model.generateContent(prompt);
+  let lastError = null;
 
-  const raw = result.response.text().trim();
+  for (const modelName of modelsToTry) {
+    try {
+      const model = genAI.getGenerativeModel({
+        model: modelName,
+        generationConfig: {
+          responseMimeType: "application/json",
+          maxOutputTokens: 8192,
+        },
+        systemInstruction: `
+You are an AI Project Builder inside a collaborative software development platform.
+Generate a concise, clean, and runnable project based on the user's description.
+Return STRICT JSON only matching this schema:
+{
+  "message": "short description of the project",
+  "files": [
+    { "path": "package.json", "content": "..." },
+    { "path": "src/App.jsx", "content": "..." },
+    { "path": "src/main.jsx", "content": "..." },
+    { "path": "src/index.css", "content": "..." },
+    { "path": "README.md", "content": "..." }
+  ]
+}
+Include essential runnable code for 4 to 6 key files. Do not use markdown code fences. Keep files concise, functional, and self-contained.
+`,
+      });
 
-  const cleaned = raw
-    .replace(/^```json\s*/i, "")
-    .replace(/```$/i, "")
-    .trim();
+      const result = await Promise.race([
+        model.generateContent(prompt),
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error(`Timeout on model ${modelName}`)), 15000)
+        ),
+      ]);
 
-  let parsed;
+      const raw = result.response.text().trim();
+      const cleaned = raw
+        .replace(/^```json\s*/i, "")
+        .replace(/```$/i, "")
+        .trim();
 
-  try {
-    parsed = JSON.parse(cleaned);
-  } catch (error) {
-    throw new Error(
-      "Gemini returned invalid project JSON"
-    );
+      const parsed = JSON.parse(cleaned);
+
+      if (parsed && Array.isArray(parsed.files) && parsed.files.length > 0) {
+        // Normalize file objects so they always have { path, content }
+        const normalizedFiles = parsed.files.map((f) => ({
+          path: f.path || f.name || f.filename || "file.txt",
+          content: typeof f.content === "string" ? f.content : JSON.stringify(f.content || "", null, 2),
+        }));
+
+        return {
+          message: parsed.message || "Project generated successfully.",
+          files: normalizedFiles,
+        };
+      }
+    } catch (err) {
+      console.warn(`[aiService] model ${modelName} failed:`, err.message);
+      lastError = err;
+    }
   }
 
-  if (
-    !parsed ||
-    !Array.isArray(parsed.files)
-  ) {
-    throw new Error(
-      "Gemini returned an invalid project structure"
-    );
-  }
-
-  return {
-    message:
-      parsed.message ||
-      "Project generated successfully.",
-    files: parsed.files,
-  };
+  throw lastError || new Error("All AI models failed to generate project");
 }
 
 module.exports = {

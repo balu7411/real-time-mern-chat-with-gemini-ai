@@ -137,6 +137,376 @@ async function createProject(req, res) {
 }
 
 // --------------------------------------------------
+// AI PROJECT BUILDER
+// POST /api/projects/ai-builder
+// --------------------------------------------------
+
+function generateScaffoldFiles(projectName, description, techStack) {
+  const isCalc = /calc/i.test(projectName) || /calc/i.test(description);
+  const isMern = /node|express|mongo/i.test(techStack);
+
+  if (isCalc) {
+    const files = [
+      {
+        path: "package.json",
+        content: JSON.stringify(
+          {
+            name: projectName.toLowerCase().replace(/\s+/g, "-"),
+            version: "1.0.0",
+            private: true,
+            scripts: {
+              dev: "vite",
+              build: "vite build",
+              preview: "vite preview",
+              ...(isMern ? { start: "node server.js" } : {}),
+            },
+            dependencies: {
+              react: "^18.2.0",
+              "react-dom": "^18.2.0",
+              ...(isMern ? { express: "^4.19.2", cors: "^2.8.5" } : {}),
+            },
+            devDependencies: {
+              vite: "^5.0.0",
+              "@vitejs/plugin-react": "^4.2.0",
+            },
+          },
+          null,
+          2
+        ),
+      },
+      {
+        path: "src/App.jsx",
+        content: `import React, { useState } from 'react';
+
+export default function App() {
+  const [display, setDisplay] = useState('0');
+  const [equation, setEquation] = useState('');
+  const [history, setHistory] = useState([]);
+
+  function handleNumber(num) {
+    setDisplay(prev => (prev === '0' ? String(num) : prev + num));
+  }
+
+  function handleOperator(op) {
+    setEquation(display + ' ' + op + ' ');
+    setDisplay('0');
+  }
+
+  function handleClear() {
+    setDisplay('0');
+    setEquation('');
+  }
+
+  function handleDecimal() {
+    if (!display.includes('.')) {
+      setDisplay(prev => prev + '.');
+    }
+  }
+
+  function handleEquals() {
+    if (!equation) return;
+    try {
+      const fullExpr = equation + display;
+      const sanitized = fullExpr.replace(/[^0-9+\\-*\\/.]/g, '');
+      const result = Function('"use strict";return (' + sanitized + ')')();
+      const formatted = String(Number(result.toFixed(6)));
+      setHistory(prev => [{ expr: fullExpr, result: formatted }, ...prev.slice(0, 9)]);
+      setDisplay(formatted);
+      setEquation('');
+    } catch (err) {
+      setDisplay('Error');
+    }
+  }
+
+  return (
+    <div className="calc-container">
+      <div className="calc-card">
+        <header className="calc-header">
+          <h2>${projectName}</h2>
+          <span className="badge">AI Scaffolded</span>
+        </header>
+        
+        <div className="calc-screen">
+          <div className="equation">{equation}</div>
+          <div className="display">{display}</div>
+        </div>
+
+        <div className="calc-grid">
+          <button onClick={handleClear} className="btn btn-fn">AC</button>
+          <button onClick={() => setDisplay(prev => String(-Number(prev)))} className="btn btn-fn">±</button>
+          <button onClick={() => setDisplay(prev => String(Number(prev) / 100))} className="btn btn-fn">%</button>
+          <button onClick={() => handleOperator('/')} className="btn btn-op">÷</button>
+
+          <button onClick={() => handleNumber(7)} className="btn">7</button>
+          <button onClick={() => handleNumber(8)} className="btn">8</button>
+          <button onClick={() => handleNumber(9)} className="btn">9</button>
+          <button onClick={() => handleOperator('*')} className="btn btn-op">×</button>
+
+          <button onClick={() => handleNumber(4)} className="btn">4</button>
+          <button onClick={() => handleNumber(5)} className="btn">5</button>
+          <button onClick={() => handleNumber(6)} className="btn">6</button>
+          <button onClick={() => handleOperator('-')} className="btn btn-op">-</button>
+
+          <button onClick={() => handleNumber(1)} className="btn">1</button>
+          <button onClick={() => handleNumber(2)} className="btn">2</button>
+          <button onClick={() => handleNumber(3)} className="btn">3</button>
+          <button onClick={() => handleOperator('+')} className="btn btn-op">+</button>
+
+          <button onClick={() => handleNumber(0)} className="btn btn-zero">0</button>
+          <button onClick={handleDecimal} className="btn">.</button>
+          <button onClick={handleEquals} className="btn btn-eq">=</button>
+        </div>
+
+        {history.length > 0 && (
+          <div className="calc-history">
+            <h4>Calculation History</h4>
+            <ul>
+              {history.map((h, i) => (
+                <li key={i}>{h.expr} = <strong>{h.result}</strong></li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}`,
+      },
+      {
+        path: "src/main.jsx",
+        content: `import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App.jsx';
+import './index.css';
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);`,
+      },
+      {
+        path: "src/index.css",
+        content: `body {
+  margin: 0;
+  background: #0c0814;
+  color: #fff;
+  font-family: system-ui, -apple-system, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+.calc-container { width: 100%; max-width: 380px; padding: 20px; }
+.calc-card { background: #140d1e; border: 1px solid rgba(245, 158, 11, 0.25); border-radius: 24px; padding: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
+.calc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.calc-header h2 { margin: 0; font-size: 16px; font-weight: 700; color: #f59e0b; }
+.badge { font-size: 10px; background: rgba(245, 158, 11, 0.15); color: #fbbf24; padding: 2px 8px; border-radius: 999px; }
+.calc-screen { background: #08050e; border-radius: 16px; padding: 16px; text-align: right; margin-bottom: 20px; min-height: 60px; }
+.equation { font-size: 12px; color: #9ca3af; min-height: 16px; }
+.display { font-size: 36px; font-weight: 700; color: #fff; }
+.calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.btn { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); color: #fff; font-size: 18px; font-weight: 600; padding: 14px 0; border-radius: 12px; cursor: pointer; transition: all 0.15s; }
+.btn:hover { background: rgba(255,255,255,0.12); transform: translateY(-1px); }
+.btn-zero { grid-column: span 2; }
+.btn-fn { background: rgba(234, 88, 12, 0.15); color: #fb923c; }
+.btn-op { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+.btn-eq { background: linear-gradient(135deg, #ea580c, #f59e0b); color: #fff; }
+.calc-history { margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 12px; font-size: 12px; }
+.calc-history h4 { margin: 0 0 8px 0; color: #9ca3af; font-size: 11px; text-transform: uppercase; }
+.calc-history ul { list-style: none; padding: 0; margin: 0; max-height: 120px; overflow-y: auto; }
+.calc-history li { padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03); display: flex; justify-content: space-between; }`,
+      },
+      {
+        path: "README.md",
+        content: `# ${projectName}\n\n${description}\n\n## Architecture Stack\n${techStack}\n\n## Features\n- Addition, subtraction, multiplication, division\n- Clear and percentage operators\n- History tape\n- Responsive modern UI`,
+      },
+    ];
+
+    if (isMern) {
+      files.push({
+        path: "server.js",
+        content: `const express = require('express');
+const cors = require('cors');
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+let calculationHistory = [];
+
+app.get('/api/calculations', (req, res) => {
+  res.json({ history: calculationHistory });
+});
+
+app.post('/api/calculations', (req, res) => {
+  const { expr, result } = req.body;
+  const entry = { id: Date.now(), expr, result, timestamp: new Date() };
+  calculationHistory.unshift(entry);
+  res.status(201).json({ entry });
+});
+
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => console.log(\`Server running on port \${PORT}\`));`,
+      });
+    }
+
+    return files;
+  }
+
+  // General project template
+  return [
+    {
+      path: "package.json",
+      content: JSON.stringify(
+        {
+          name: projectName.toLowerCase().replace(/\s+/g, "-"),
+          version: "1.0.0",
+          private: true,
+          scripts: { dev: "vite", build: "vite build" },
+          dependencies: { react: "^18.2.0", "react-dom": "^18.2.0" },
+          devDependencies: { vite: "^5.0.0", "@vitejs/plugin-react": "^4.2.0" },
+        },
+        null,
+        2
+      ),
+    },
+    {
+      path: "src/App.jsx",
+      content: `import React, { useState } from 'react';
+
+export default function App() {
+  const [items, setItems] = useState([
+    { id: 1, title: 'Explore Architecture', done: true },
+    { id: 2, title: 'Implement Features', done: false }
+  ]);
+  const [input, setInput] = useState('');
+
+  function addItem(e) {
+    e.preventDefault();
+    if (!input.trim()) return;
+    setItems([...items, { id: Date.now(), title: input.trim(), done: false }]);
+    setInput('');
+  }
+
+  return (
+    <div style={{ padding: 32, fontFamily: 'sans-serif', maxWidth: 600, margin: '0 auto' }}>
+      <h1>${projectName}</h1>
+      <p style={{ color: '#888' }}>${description}</p>
+      
+      <form onSubmit={addItem} style={{ display: 'flex', gap: 8, margin: '24px 0' }}>
+        <input 
+          value={input} 
+          onChange={e => setInput(e.target.value)} 
+          placeholder="Add new task or entry..." 
+          style={{ flex: 1, padding: 10, borderRadius: 8, border: '1px solid #ccc' }}
+        />
+        <button type="submit" style={{ padding: '10px 18px', background: '#f59e0b', color: '#000', border: 'none', borderRadius: 8, fontWeight: 'bold', cursor: 'pointer' }}>
+          Add
+        </button>
+      </form>
+
+      <ul style={{ listStyle: 'none', padding: 0 }}>
+        {items.map(item => (
+          <li key={item.id} style={{ padding: '12px 16px', background: '#181224', color: '#fff', borderRadius: 8, marginBottom: 8, display: 'flex', justifyContent: 'space-between' }}>
+            <span>{item.title}</span>
+            <input type="checkbox" checked={item.done} onChange={() => setItems(items.map(i => i.id === item.id ? { ...i, done: !i.done } : i))} />
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}`,
+    },
+    {
+      path: "src/main.jsx",
+      content: `import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App.jsx';
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);`,
+    },
+    {
+      path: "src/index.css",
+      content: `body { margin: 0; background: #0c0814; color: #fff; }`,
+    },
+    {
+      path: "README.md",
+      content: `# ${projectName}\n\n${description}\n\nTech Stack: ${techStack}`,
+    },
+  ];
+}
+
+async function createAIProject(req, res) {
+  try {
+    const { projectName, description, techStack = "React + Node.js + Express + MongoDB" } = req.body;
+
+    if (!projectName || !projectName.trim()) {
+      return res.status(400).json({ message: "Project name is required" });
+    }
+    if (!description || !description.trim()) {
+      return res.status(400).json({ message: "Project description is required" });
+    }
+
+    let files = [];
+    let generationSummary = "Project generated successfully.";
+
+    // 1. Try Gemini generation first
+    try {
+      const { buildProjectWithAI } = require("../services/aiService");
+      const aiResult = await buildProjectWithAI({
+        projectName: projectName.trim(),
+        description: description.trim(),
+        techStack,
+      });
+
+      if (aiResult && Array.isArray(aiResult.files) && aiResult.files.length > 0) {
+        files = aiResult.files;
+        generationSummary = aiResult.message || generationSummary;
+      }
+    } catch (aiErr) {
+      console.warn("[projectController] Gemini generation fallback:", aiErr.message);
+    }
+
+    // 2. Intelligent Scaffolding Fallback
+    if (!files || files.length === 0) {
+      files = generateScaffoldFiles(projectName.trim(), description.trim(), techStack);
+      generationSummary = `Project ${projectName.trim()} scaffolded with ${files.length} core architecture files.`;
+    }
+
+    // 3. Create Project in DB
+    const project = await Project.create({
+      name: projectName.trim(),
+      description: description.trim(),
+      owner: req.user._id,
+      collaborators: [],
+      files,
+      priority: "High",
+      status: "Active",
+    });
+
+    const populatedProject = await Project.findById(project._id)
+      .populate("owner", "name email")
+      .populate("collaborators", "name email");
+
+    res.status(201).json({
+      success: true,
+      message: generationSummary,
+      project: populatedProject,
+    });
+  } catch (err) {
+    console.error("[projectController] createAIProject error:", err.message);
+    res.status(500).json({
+      message: err.message || "Failed to generate project",
+    });
+  }
+}
+
+// --------------------------------------------------
 // GET PROJECTS
 // GET /api/projects
 // --------------------------------------------------
@@ -1083,6 +1453,7 @@ async function updateClientRequest(
 
 module.exports = {
   createProject,
+  createAIProject,
   getProjects,
   getProject,
   updateProject,

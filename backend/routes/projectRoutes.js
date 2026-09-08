@@ -2,6 +2,7 @@ const express = require("express");
 
 const {
   createProject,
+  createAIProject,
   getProjects,
   getProject,
   addCollaborator,
@@ -21,6 +22,9 @@ const { protect } = require("../middleware/auth");
 const router = express.Router();
 
 router.use(protect);
+
+// AI Project Builder
+router.post("/ai-builder", createAIProject);
 
 // Projects
 router.post("/", createProject);
